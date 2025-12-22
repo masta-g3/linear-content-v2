@@ -1,6 +1,6 @@
 ---
 title: "linear content"
-subtitle: "thoughts on language, numeric computations, and other things."
+subtitle: "thoughts on language, markets, numeric computations, among other things."
 listing:
   contents: posts
   sort: "date desc"
