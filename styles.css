@@ -20,12 +20,9 @@
 /* === CSS Variables === */
 :root {
   --font-mono: 'Berkeley Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', 'Consolas', monospace;
-  --white: #FAFAF9;
   --paper: #FAFAF9;
   --black: #000000;
-  --dark-gray: #1A1A1A;
   --mid-gray: #666666;
-  --light-gray: #E5E5E5;
   --border-color: #CCCCCC;
   --grid-color: #E8E8E6;
   --code-bg: #F5F5F3;
@@ -39,27 +36,31 @@
 }
 
 /* Dark mode: industrial plotting paper (dark variant) */
+/* Dual selector: media query for system preference, body class for Quarto toggle */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Lighter, warmer dark—like aged dark paper */
     --paper: #1E1D1B;
-    --white: #1E1D1B;
-    /* Warm cream text—like chalk or light pencil */
     --black: #E6E4DF;
-    --dark-gray: #D0CEC8;
-    --mid-gray: #ADABA5;
-    /* Warmer supporting tones */
-    --light-gray: #2A2926;
+    --mid-gray: #B8B6B0;
     --border-color: #3D3B37;
-    /* More visible grid—essential to the aesthetic */
     --grid-color: #2F2D2A;
-    /* Code blocks with warmth */
     --code-bg: #252422;
     --inline-code-bg: #2D2B28;
-    /* Selection */
     --selection-bg: #E6E4DF;
     --selection-text: #1E1D1B;
   }
+}
+
+body.quarto-dark {
+  --paper: #1E1D1B;
+  --black: #E6E4DF;
+  --mid-gray: #B8B6B0;
+  --border-color: #3D3B37;
+  --grid-color: #2F2D2A;
+  --code-bg: #252422;
+  --inline-code-bg: #2D2B28;
+  --selection-bg: #E6E4DF;
+  --selection-text: #1E1D1B;
 }
 
 /* === Base === */
@@ -364,7 +365,7 @@ figcaption {
 
 .quarto-post .listing-title {
   font-family: var(--font-mono);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1rem;
   color: var(--black);
   margin: 0.25rem 0 0 0;
@@ -396,6 +397,17 @@ figcaption {
   color: var(--mid-gray);
   margin-top: 0.25rem;
   line-height: 1.5;
+}
+
+.quarto-post .listing-description a,
+.quarto-post .listing-description a p {
+  color: inherit;
+  text-decoration: none;
+}
+
+.quarto-post .listing-description a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .quarto-post .listing-categories {
@@ -522,6 +534,11 @@ div.quarto-post.image-left > .thumbnail {
   background-color: transparent !important;
   border: 1px solid var(--black) !important;
   border-radius: 0 !important;
+}
+
+/* Hide theme toggle (Quarto 1.7.29 bug: JS errors on pages without code) */
+.quarto-color-scheme-toggle {
+  display: none !important;
 }
 
 /* === Selection === */

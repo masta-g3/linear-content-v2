@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>structure – linear content</title>
+<title>dark_mode_wiring – linear content</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -318,13 +318,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#project-structure" id="toc-project-structure" class="nav-link active" data-scroll-target="#project-structure">Project Structure</a>
+  <li><a href="#dark-mode-wiring-quarto-bootstrap" id="toc-dark-mode-wiring-quarto-bootstrap" class="nav-link active" data-scroll-target="#dark-mode-wiring-quarto-bootstrap">Dark Mode Wiring (Quarto + Bootstrap)</a>
   <ul class="collapse">
-  <li><a href="#directory-layout" id="toc-directory-layout" class="nav-link" data-scroll-target="#directory-layout">Directory Layout</a></li>
-  <li><a href="#key-files" id="toc-key-files" class="nav-link" data-scroll-target="#key-files">Key Files</a></li>
-  <li><a href="#adding-posts" id="toc-adding-posts" class="nav-link" data-scroll-target="#adding-posts">Adding Posts</a></li>
-  <li><a href="#building" id="toc-building" class="nav-link" data-scroll-target="#building">Building</a></li>
-  <li><a href="#design-system" id="toc-design-system" class="nav-link" data-scroll-target="#design-system">Design System</a></li>
+  <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context">Context</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#non-goals" id="toc-non-goals" class="nav-link" data-scroll-target="#non-goals">Non-goals</a></li>
+  <li><a href="#one-decision-to-confirm-before-implementing" id="toc-one-decision-to-confirm-before-implementing" class="nav-link" data-scroll-target="#one-decision-to-confirm-before-implementing">One decision to confirm (before implementing)</a></li>
+  <li><a href="#solution-alternatives-high-level" id="toc-solution-alternatives-high-level" class="nav-link" data-scroll-target="#solution-alternatives-high-level">Solution alternatives (high-level)</a>
+  <ul class="collapse">
+  <li><a href="#alternative-1-quarto-native-dual-theme-respect-user-color-scheme-recommended" id="toc-alternative-1-quarto-native-dual-theme-respect-user-color-scheme-recommended" class="nav-link" data-scroll-target="#alternative-1-quarto-native-dual-theme-respect-user-color-scheme-recommended">Alternative 1 — Quarto-native dual theme + <code>respect-user-color-scheme</code> (recommended)</a></li>
+  <li><a href="#alternative-2-stay-single-theme-and-override-bootstrap-variables-via-prefers-color-scheme" id="toc-alternative-2-stay-single-theme-and-override-bootstrap-variables-via-prefers-color-scheme" class="nav-link" data-scroll-target="#alternative-2-stay-single-theme-and-override-bootstrap-variables-via-prefers-color-scheme">Alternative 2 — Stay single-theme and override Bootstrap variables via <code>prefers-color-scheme</code></a></li>
+  <li><a href="#alternative-3-extension-based-auto-dark" id="toc-alternative-3-extension-based-auto-dark" class="nav-link" data-scroll-target="#alternative-3-extension-based-auto-dark">Alternative 3 — Extension-based auto-dark</a></li>
+  </ul></li>
+  <li><a href="#proposed-architecture-what-we-want-after-the-change" id="toc-proposed-architecture-what-we-want-after-the-change" class="nav-link" data-scroll-target="#proposed-architecture-what-we-want-after-the-change">Proposed architecture (what we want after the change)</a>
+  <ul class="collapse">
+  <li><a href="#layers" id="toc-layers" class="nav-link" data-scroll-target="#layers">Layers</a></li>
+  <li><a href="#data-flow-build-runtime" id="toc-data-flow-build-runtime" class="nav-link" data-scroll-target="#data-flow-build-runtime">Data flow (build + runtime)</a></li>
+  <li><a href="#what-correct-means-definition-of-done" id="toc-what-correct-means-definition-of-done" class="nav-link" data-scroll-target="#what-correct-means-definition-of-done">What “correct” means (definition of done)</a></li>
+  </ul></li>
+  <li><a href="#implementation-plan-phased-reviewable" id="toc-implementation-plan-phased-reviewable" class="nav-link" data-scroll-target="#implementation-plan-phased-reviewable">Implementation plan (phased, reviewable)</a>
+  <ul class="collapse">
+  <li><a href="#phase-0-baseline-acceptance-criteria-no-code-changes" id="toc-phase-0-baseline-acceptance-criteria-no-code-changes" class="nav-link" data-scroll-target="#phase-0-baseline-acceptance-criteria-no-code-changes">Phase 0 — Baseline + acceptance criteria (no code changes)</a></li>
+  <li><a href="#phase-1-wire-quarto-for-true-dual-mode-bootstrap" id="toc-phase-1-wire-quarto-for-true-dual-mode-bootstrap" class="nav-link" data-scroll-target="#phase-1-wire-quarto-for-true-dual-mode-bootstrap">Phase 1 — Wire Quarto for true dual-mode Bootstrap</a></li>
+  <li><a href="#phase-2-align-custom-tokens-with-quartos-active-mode" id="toc-phase-2-align-custom-tokens-with-quartos-active-mode" class="nav-link" data-scroll-target="#phase-2-align-custom-tokens-with-quartos-active-mode">Phase 2 — Align custom tokens with Quarto’s active mode</a></li>
+  <li><a href="#phase-3-fix-listing-titledescription-anchor-inheritance" id="toc-phase-3-fix-listing-titledescription-anchor-inheritance" class="nav-link" data-scroll-target="#phase-3-fix-listing-titledescription-anchor-inheritance">Phase 3 — Fix listing title/description anchor inheritance</a></li>
+  <li><a href="#phase-4-manual-verification-checklist-tight-feedback-loop" id="toc-phase-4-manual-verification-checklist-tight-feedback-loop" class="nav-link" data-scroll-target="#phase-4-manual-verification-checklist-tight-feedback-loop">Phase 4 — Manual verification checklist (tight feedback loop)</a></li>
+  <li><a href="#phase-5-documentation-tidy-up" id="toc-phase-5-documentation-tidy-up" class="nav-link" data-scroll-target="#phase-5-documentation-tidy-up">Phase 5 — Documentation tidy-up</a></li>
+  </ul></li>
+  <li><a href="#files-to-change-expected" id="toc-files-to-change-expected" class="nav-link" data-scroll-target="#files-to-change-expected">Files to change (expected)</a></li>
+  <li><a href="#risk-trade-offs" id="toc-risk-trade-offs" class="nav-link" data-scroll-target="#risk-trade-offs">Risk / trade-offs</a></li>
+  <li><a href="#rollback-plan" id="toc-rollback-plan" class="nav-link" data-scroll-target="#rollback-plan">Rollback plan</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -336,88 +359,313 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="project-structure" class="level1">
-<h1>Project Structure</h1>
-<p>Linear Content is a Quarto-based technical blog.</p>
-<section id="directory-layout" class="level2">
-<h2 class="anchored" data-anchor-id="directory-layout">Directory Layout</h2>
-<pre><code>linear-content-v2/
-├── _quarto.yml        # Site configuration
-├── _brand.yml         # Brand colors, typography
-├── theme-dark.scss    # Bootstrap dark mode overrides
-├── styles.css         # Custom CSS
-├── index.qmd          # Homepage with post listing
-├── about.qmd          # About page
-├── posts/             # Blog posts (one folder per post)
-├── fonts/             # Berkeley Mono woff2 files
-├── images/            # Site images
-├── pending/           # Draft posts (not published)
-├── scripts/           # Build/utility scripts
-└── docs/              # Developer documentation
-    ├── STRUCTURE.md   # This file
-    ├── VISUAL_IDENTITY.md
-    └── history/       # Archived implementation notes</code></pre>
+<section id="dark-mode-wiring-quarto-bootstrap" class="level1">
+<h1>Dark Mode Wiring (Quarto + Bootstrap)</h1>
+<section id="context" class="level2">
+<h2 class="anchored" data-anchor-id="context">Context</h2>
+<p>We currently implement dark mode via CSS variables in <code>styles.css</code> using <code>@media (prefers-color-scheme: dark)</code>.</p>
+<p>This works well for <strong>post pages</strong>, but the <strong>listing view</strong> (homepage listing) wraps titles and descriptions in <code>&lt;a&gt;</code> tags, which can pick up Bootstrap/Quarto link styling instead of our intended <code>--black</code> / <code>--mid-gray</code> tokens. Compounding this, the generated site is currently built with a <strong>single light Bootstrap theme</strong> (e.g.&nbsp;<code>data-mode="light"</code> and <code>body.quarto-light</code>), so some Bootstrap variables remain “light” even when the OS prefers dark.</p>
+<p>The goal is to make listing titles + descriptions match the post view’s title/description styling in <strong>both</strong> light and dark modes, while preserving the existing visual identity and keeping the wiring clean (no bloat, no hacky CSS wars).</p>
 </section>
-<section id="key-files" class="level2">
-<h2 class="anchored" data-anchor-id="key-files">Key Files</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>File</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>_quarto.yml</code></td>
-<td>Site metadata, navbar, footer, format options</td>
-</tr>
-<tr class="even">
-<td><code>_brand.yml</code></td>
-<td>Color palette, typography definitions</td>
-</tr>
-<tr class="odd">
-<td><code>theme-dark.scss</code></td>
-<td>Bootstrap Sass variable overrides for dark mode</td>
-</tr>
-<tr class="even">
-<td><code>styles.css</code></td>
-<td>All visual styling (dot grid, tick marks, etc.)</td>
-</tr>
-<tr class="odd">
-<td><code>index.qmd</code></td>
-<td>Post listing configuration</td>
-</tr>
-<tr class="even">
-<td><code>docs/history/</code></td>
-<td>Archived implementation notes and specs</td>
-</tr>
-</tbody>
-</table>
+<section id="goals" class="level2">
+<h2 class="anchored" data-anchor-id="goals">Goals</h2>
+<ul>
+<li><strong>Consistency</strong>: Listing title/description typography + color match the post title banner’s title/description styling.</li>
+<li><strong>Correct modes</strong>: Both light and dark render correctly.</li>
+<li><strong>System preference</strong>: Site follows the OS/browser preference for dark mode (current behavior).</li>
+<li><strong>Minimal change surface</strong>: Adjust only the wiring + the minimum CSS needed for listing anchors to inherit properly.</li>
+<li><strong>Maintain visual identity</strong>: Keep the “industrial plotting paper” aesthetic; no Bootswatch “darkly” aesthetic takeover.</li>
+</ul>
 </section>
-<section id="adding-posts" class="level2">
-<h2 class="anchored" data-anchor-id="adding-posts">Adding Posts</h2>
-<p>Create a folder in <code>posts/</code> with an <code>index.qmd</code>:</p>
-<pre><code>posts/
-└── my-new-post/
-    ├── index.qmd      # Post content
-    └── images/        # Post-specific images (optional)</code></pre>
-<p>Post frontmatter:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Post Title"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Brief description"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2024-01-15"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">nlp</span><span class="kw">,</span><span class="at"> data science</span><span class="kw">]</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="non-goals" class="level2">
+<h2 class="anchored" data-anchor-id="non-goals">Non-goals</h2>
+<ul>
+<li>Redesigning the site or changing typography/layout.</li>
+<li>Adding a custom theme switcher UI beyond what Quarto already provides.</li>
+<li>Editing generated <code>_site/</code> artifacts directly (they are build outputs).</li>
+</ul>
 </section>
-<section id="building" class="level2">
-<h2 class="anchored" data-anchor-id="building">Building</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> preview          <span class="co"># Local dev server</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render           <span class="co"># Build to _site/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="one-decision-to-confirm-before-implementing" class="level2">
+<h2 class="anchored" data-anchor-id="one-decision-to-confirm-before-implementing">One decision to confirm (before implementing)</h2>
+<p>Quarto’s official dark-mode support <strong>adds a theme toggle UI automatically</strong> when both light + dark themes are provided.</p>
+<ul>
+<li><strong>Option A (preferred for robustness)</strong>: Allow the toggle to exist, but default behavior follows system preference.
+<ul>
+<li>Pros: Fully supported by Quarto; users can override if they want.</li>
+<li>Cons: Not “system only” (users can override).</li>
+</ul></li>
+<li><strong>Option B (strict “system only”)</strong>: Keep system-following behavior and remove the toggle from UX.
+<ul>
+<li>Pros: Preserves the “system only” product decision.</li>
+<li>Cons: Quarto doesn’t document a supported “disable toggle” option; hiding it would likely require CSS (small and stable, but arguably “hacky”).</li>
+</ul></li>
+</ul>
+<p><strong>Action</strong>: Decide whether we accept the built-in Quarto toggle (A) or need strict system-only (B). The plan below supports both; implementation steps differ slightly.</p>
+<hr>
 </section>
-<section id="design-system" class="level2">
-<h2 class="anchored" data-anchor-id="design-system">Design System</h2>
-<p>See <a href="../docs/VISUAL_IDENTITY.html">VISUAL_IDENTITY.md</a> for colors, typography, and styling guidelines.</p>
+<section id="solution-alternatives-high-level" class="level2">
+<h2 class="anchored" data-anchor-id="solution-alternatives-high-level">Solution alternatives (high-level)</h2>
+<section id="alternative-1-quarto-native-dual-theme-respect-user-color-scheme-recommended" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-1-quarto-native-dual-theme-respect-user-color-scheme-recommended">Alternative 1 — Quarto-native dual theme + <code>respect-user-color-scheme</code> (recommended)</h3>
+<p>Use Quarto’s supported dark mode wiring:</p>
+<ul>
+<li>Provide both <code>theme.light</code> and <code>theme.dark</code> in <code>_quarto.yml</code>.</li>
+<li>Set <code>respect-user-color-scheme: true</code> so initial render honors OS/browser preference.</li>
+<li>Keep <code>cosmo</code> as the base theme for both, and add a small <code>theme-dark.scss</code> that overrides Bootstrap’s Sass variables to match the site’s dark palette.</li>
+<li>Add minimal CSS for listing anchor wrappers so link text inherits the desired colors/weights.</li>
+</ul>
+<p>This is the cleanest approach because it makes Bootstrap itself “dark-aware” instead of fighting light Bootstrap variables in dark mode.</p>
+</section>
+<section id="alternative-2-stay-single-theme-and-override-bootstrap-variables-via-prefers-color-scheme" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-2-stay-single-theme-and-override-bootstrap-variables-via-prefers-color-scheme">Alternative 2 — Stay single-theme and override Bootstrap variables via <code>prefers-color-scheme</code></h3>
+<p>Keep a single Bootstrap build, but override key <code>--bs-*</code> variables and/or link rules inside <code>@media (prefers-color-scheme: dark)</code> in <code>styles.css</code>.</p>
+<ul>
+<li>Pros: No toggle is introduced.</li>
+<li>Cons: More brittle: you’re essentially maintaining a parallel “dark bootstrap layer” and can miss variables used by Quarto components (listings, pagination, search UI, etc.).</li>
+</ul>
+</section>
+<section id="alternative-3-extension-based-auto-dark" class="level3">
+<h3 class="anchored" data-anchor-id="alternative-3-extension-based-auto-dark">Alternative 3 — Extension-based auto-dark</h3>
+<p>Use a Quarto extension (e.g.&nbsp;<code>quarto-auto-dark</code>) to retrofit automatic dark mode.</p>
+<ul>
+<li>Pros: Potentially minimal YAML changes.</li>
+<li>Cons: Adds a new dependency/pattern; less desirable given the “minimalist, non-bloated” constraint.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="proposed-architecture-what-we-want-after-the-change" class="level2">
+<h2 class="anchored" data-anchor-id="proposed-architecture-what-we-want-after-the-change">Proposed architecture (what we want after the change)</h2>
+<section id="layers" class="level3">
+<h3 class="anchored" data-anchor-id="layers">Layers</h3>
+<ol type="1">
+<li><strong>Bootstrap theme (Quarto-compiled)</strong>
+<ul>
+<li>Defines Bootstrap variables for light and dark mode (body, links, UI components).</li>
+</ul></li>
+<li><strong>Brand tokens (<code>_brand.yml</code>)</strong>
+<ul>
+<li>Keeps consistent typography + “brand-level” settings.</li>
+</ul></li>
+<li><strong>Site custom CSS (<code>styles.css</code>)</strong>
+<ul>
+<li>Owns the unique aesthetic (dot grid, borders, layout, listing formatting) using our tokens (<code>--paper</code>, <code>--black</code>, etc.).</li>
+</ul></li>
+</ol>
+</section>
+<section id="data-flow-build-runtime" class="level3">
+<h3 class="anchored" data-anchor-id="data-flow-build-runtime">Data flow (build + runtime)</h3>
+<pre class="mermaid"><code>flowchart TB
+  A["Source config&lt;br/&gt;_quarto.yml"] --&gt; B["Quarto render"]
+  C["_brand.yml&lt;br/&gt;brand tokens"] --&gt; B
+  D["theme-dark.scss&lt;br/&gt;Bootstrap dark overrides"] --&gt; B
+  E["styles.css&lt;br/&gt;site aesthetic"] --&gt; B
+  B --&gt; F["_site/*.html + compiled bootstrap css"]
+  F --&gt; G["Browser CSS cascade"]
+  G --&gt; H["Listing view + Post view"]</code></pre>
+</section>
+<section id="what-correct-means-definition-of-done" class="level3">
+<h3 class="anchored" data-anchor-id="what-correct-means-definition-of-done">What “correct” means (definition of done)</h3>
+<ul>
+<li><strong>Listing title</strong> color/weight matches post title (visually).</li>
+<li><strong>Listing description</strong> color matches post description (visually).</li>
+<li>Works in:
+<ul>
+<li>Light mode</li>
+<li>Dark mode</li>
+</ul></li>
+<li>Works on:
+<ul>
+<li>Homepage listing (<code>index.qmd</code>)</li>
+<li>Any post page (<code>posts/*/index.ipynb</code> → generated HTML)</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="implementation-plan-phased-reviewable" class="level2">
+<h2 class="anchored" data-anchor-id="implementation-plan-phased-reviewable">Implementation plan (phased, reviewable)</h2>
+<section id="phase-0-baseline-acceptance-criteria-no-code-changes" class="level3">
+<h3 class="anchored" data-anchor-id="phase-0-baseline-acceptance-criteria-no-code-changes">Phase 0 — Baseline + acceptance criteria (no code changes)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Capture screenshots of:</label>
+<ul>
+<li>Listing view (light + dark)</li>
+<li>One post page (light + dark)</li>
+</ul></li>
+<li><label><input type="checkbox" checked="">Identify the specific mismatch:</label>
+<ul>
+<li>Is the problem <strong>title color</strong>, <strong>description color</strong>, <strong>underline/decoration</strong>, <strong>font weight</strong>, or all?</li>
+</ul></li>
+<li><label><input type="checkbox" checked="">Confirm “system only” vs “system + toggle” decision (Option A vs B).</label>
+<ul>
+<li><strong>Decision</strong>: Option A (toggle allowed, system preference honored by default)</li>
+</ul></li>
+</ul>
+</section>
+<section id="phase-1-wire-quarto-for-true-dual-mode-bootstrap" class="level3">
+<h3 class="anchored" data-anchor-id="phase-1-wire-quarto-for-true-dual-mode-bootstrap">Phase 1 — Wire Quarto for true dual-mode Bootstrap</h3>
+<p><strong>Goal</strong>: Ensure Quarto can output both light + dark Bootstrap CSS and select based on system preference.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Update <code>_quarto.yml</code> to use Quarto’s supported dark-mode config:</label>
+<ul>
+<li>Provide both <code>theme.light</code> and <code>theme.dark</code>.</li>
+<li>Enable <code>respect-user-color-scheme: true</code>.</li>
+</ul></li>
+</ul>
+<p>Example wiring (to be adapted to this repo’s exact paths):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">light</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">cosmo</span><span class="kw">,</span><span class="at"> _brand.yml</span><span class="kw">]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">dark</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">cosmo</span><span class="kw">,</span><span class="at"> _brand.yml</span><span class="kw">,</span><span class="at"> theme-dark.scss</span><span class="kw">]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">respect-user-color-scheme</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Add <code>theme-dark.scss</code> that “turns cosmo dark” using the site’s existing dark palette.</label>
+<ul>
+<li>Keep this file minimal: only variables that matter for global readability and link colors.</li>
+</ul></li>
+</ul>
+<p>Starter content (tokens must match <code>styles.css</code> dark palette):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scss code-with-copy"><code class="sourceCode scss"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:defaults --*/</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Base document colors</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">$body-bg</span>: <span class="cn">#1E1D1B</span><span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="va">$body-color</span>: <span class="cn">#E6E4DF</span><span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Links (listing wraps title/description in &lt;a&gt;)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="va">$link-color</span>: <span class="cn">#E6E4DF</span><span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="va">$link-hover-color</span>: <span class="cn">#E6E4DF</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Muted text used in some Bootstrap components</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">$text-muted</span>: <span class="cn">#B8B6B0</span><span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Optional: make borders match the “plotting paper” vibe</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">$border-color</span>: <span class="cn">#3D3B37</span><span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">/*-- scss:rules --*/</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">// Keep Quarto/Bootstrap from reintroducing underlines where we don’t want them.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">// (Prefer handling listing-specific decoration in styles.css.)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notes: - We intentionally keep this file “bootstrap-level” and leave layout/aesthetic to <code>styles.css</code>. - We should not fight bootstrap with <code>!important</code> here; use Sass variables first.</p>
+</section>
+<section id="phase-2-align-custom-tokens-with-quartos-active-mode" class="level3">
+<h3 class="anchored" data-anchor-id="phase-2-align-custom-tokens-with-quartos-active-mode">Phase 2 — Align custom tokens with Quarto’s active mode</h3>
+<p>This depends on the “toggle” decision:</p>
+<section id="option-a-toggle-allowed" class="level4">
+<h4 class="anchored" data-anchor-id="option-a-toggle-allowed">Option A (toggle allowed)</h4>
+<p><strong>Goal</strong>: Ensure our custom variables switch based on Quarto’s active mode (not only the OS media query), so the toggle doesn’t break our CSS.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Migrate dark token overrides in <code>styles.css</code> from:</label>
+<ul>
+<li><code>@media (prefers-color-scheme: dark) { :root { ... } }</code></li>
+<li>to a Quarto mode selector like:
+<ul>
+<li><code>body.quarto-dark { ... }</code> (or <code>html[data-bs-theme="dark"] { ... }</code> depending on Quarto output)</li>
+</ul></li>
+</ul></li>
+<li><label><input type="checkbox" checked="">Keep the light tokens as defaults.</label></li>
+</ul>
+<p>This makes our CSS consistent with Quarto’s theme switching logic and prevents “OS says dark but user toggled light” mismatches.</p>
+</section>
+<section id="option-b-strict-system-only" class="level4">
+<h4 class="anchored" data-anchor-id="option-b-strict-system-only">Option B (strict system-only)</h4>
+<p><strong>Goal</strong>: Preserve current <code>prefers-color-scheme</code> behavior.</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Keep the existing <code>@media (prefers-color-scheme: dark)</code> token overrides.</label></li>
+<li><label><input type="checkbox">If Quarto forces a visible toggle, decide whether to:</label>
+<ul>
+<li>Accept it anyway (fallback to Option A), or</li>
+<li>Hide it with a minimal, well-targeted CSS rule (only if acceptable).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="phase-3-fix-listing-titledescription-anchor-inheritance" class="level3">
+<h3 class="anchored" data-anchor-id="phase-3-fix-listing-titledescription-anchor-inheritance">Phase 3 — Fix listing title/description anchor inheritance</h3>
+<p><strong>Goal</strong>: Listing titles + descriptions are links, but should <em>look like</em> the post title/description.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Update <code>styles.css</code> listing rules so the <code>&lt;a&gt;</code> wrappers do not override the parent color/weight/decoration.</label></li>
+</ul>
+<p>Recommended minimal additions (exact selectors may be adjusted after inspection):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.quarto-post</span> <span class="fu">.listing-description</span> a {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="bu">inherit</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-decoration</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.quarto-post</span> <span class="fu">.listing-description</span> a<span class="in">:hover</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-decoration</span><span class="ch">:</span> <span class="dv">underline</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-underline-offset</span><span class="ch">:</span> <span class="dv">2</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Also verify: - <code>.quarto-post .listing-title a</code> already uses <code>color: inherit; text-decoration: none;</code> - The <code>delink</code> wrapper class doesn’t introduce conflicting rules.</p>
+</section>
+<section id="phase-4-manual-verification-checklist-tight-feedback-loop" class="level3">
+<h3 class="anchored" data-anchor-id="phase-4-manual-verification-checklist-tight-feedback-loop">Phase 4 — Manual verification checklist (tight feedback loop)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Run <code>quarto preview</code> and verify in a browser:</label>
+<ul>
+<li>Listing view title + description match post view title + description in <strong>light mode</strong></li>
+<li>Listing view title + description match post view title + description in <strong>dark mode</strong></li>
+</ul></li>
+<li><label><input type="checkbox">Verify link hover behavior is consistent and tasteful:</label>
+<ul>
+<li>Title hover underline appears (if desired)</li>
+<li>Description hover underline appears (if desired) and doesn’t look noisy</li>
+</ul></li>
+<li><label><input type="checkbox">Verify “global” components didn’t regress:</label>
+<ul>
+<li>Navbar links</li>
+<li>Sidebar category filter styling</li>
+<li>Footer links</li>
+<li>Code blocks + syntax highlighting (light/dark already configured in <code>_quarto.yml</code>)</li>
+</ul></li>
+</ul>
+</section>
+<section id="phase-5-documentation-tidy-up" class="level3">
+<h3 class="anchored" data-anchor-id="phase-5-documentation-tidy-up">Phase 5 — Documentation tidy-up</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Update <code>docs/STRUCTURE.md</code> to include new theme file(s) and this plan doc.</label></li>
+<li><label><input type="checkbox">(Optional) Add a short note to <code>docs/history/</code> describing the wiring change once implemented.</label></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="files-to-change-expected" class="level2">
+<h2 class="anchored" data-anchor-id="files-to-change-expected">Files to change (expected)</h2>
+<ul>
+<li><code>/_quarto.yml</code>
+<ul>
+<li>Add <code>respect-user-color-scheme: true</code></li>
+<li>Change <code>theme:</code> to light/dark mapping</li>
+</ul></li>
+<li><code>/theme-dark.scss</code> <strong>or</strong> <code>/docs/theme-dark.scss</code> (choose location; prefer project root for theme assets)</li>
+<li><code>/styles.css</code>
+<ul>
+<li>Adjust listing anchor inheritance</li>
+<li>(Option A) change how dark tokens are activated (Quarto mode vs media query)</li>
+</ul></li>
+<li><code>/docs/STRUCTURE.md</code>
+<ul>
+<li>Document new file(s)</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+<section id="risk-trade-offs" class="level2">
+<h2 class="anchored" data-anchor-id="risk-trade-offs">Risk / trade-offs</h2>
+<ul>
+<li><strong>Toggle UX</strong>: Quarto’s supported dark mode comes with a toggle. If we must be strict system-only, we’ll need an explicit decision on whether hiding it via CSS is acceptable.</li>
+<li><strong>JS requirement</strong>: Quarto’s <code>respect-user-color-scheme</code> requires JavaScript (Quarto 1.7+). With JS disabled, the “first theme listed” is used.</li>
+<li><strong>Token duplication</strong>: If both <code>theme-dark.scss</code> and <code>styles.css</code> define colors, ensure they are consistent (avoid drifting palettes).</li>
+</ul>
+<hr>
+</section>
+<section id="rollback-plan" class="level2">
+<h2 class="anchored" data-anchor-id="rollback-plan">Rollback plan</h2>
+<ul>
+<li>Revert <code>_quarto.yml</code> to single-theme config.</li>
+<li>Remove <code>theme-dark.scss</code>.</li>
+<li>Revert any mode-switching selector changes in <code>styles.css</code>.</li>
+</ul>
 
 
 </section>
@@ -509,7 +757,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/blog\.mg3\.dev");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
