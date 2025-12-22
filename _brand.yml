@@ -4,14 +4,16 @@ meta:
 
 color:
   palette:
-    white: "#FFFFFF"
+    white: "#FAFAF9"
+    paper: "#FAFAF9"
     black: "#000000"
     dark-gray: "#1A1A1A"
     mid-gray: "#666666"
     light-gray: "#E5E5E5"
     border-gray: "#CCCCCC"
+    grid-color: "#E8E8E6"
   foreground: black
-  background: white
+  background: paper
   primary: black
   secondary: mid-gray
 
