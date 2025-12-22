@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+// Dark mode Bootstrap overrides - industrial plotting paper aesthetic
+// Tokens must match styles.css dark palette
+
+// Base document
+$body-bg: #1E1D1B;
+$body-color: #E6E4DF;
+
+// Links (listing wraps title/description in <a>)
+$link-color: #E6E4DF;
+$link-hover-color: #E6E4DF;
+
+// Secondary text
+$text-muted: #B8B6B0;
+
+// Borders
+$border-color: #3D3B37;

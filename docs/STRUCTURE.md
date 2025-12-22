@@ -8,6 +8,7 @@ Linear Content is a Quarto-based technical blog.
 linear-content-v2/
 ├── _quarto.yml        # Site configuration
 ├── _brand.yml         # Brand colors, typography
+├── theme-dark.scss    # Bootstrap dark mode overrides
 ├── styles.css         # Custom CSS
 ├── index.qmd          # Homepage with post listing
 ├── about.qmd          # About page
@@ -18,7 +19,8 @@ linear-content-v2/
 ├── scripts/           # Build/utility scripts
 └── docs/              # Developer documentation
     ├── STRUCTURE.md   # This file
-    └── VISUAL_IDENTITY.md
+    ├── VISUAL_IDENTITY.md
+    └── history/       # Archived implementation notes
 ```
 
 ## Key Files
@@ -27,8 +29,10 @@ linear-content-v2/
 |------|---------|
 | `_quarto.yml` | Site metadata, navbar, footer, format options |
 | `_brand.yml` | Color palette, typography definitions |
+| `theme-dark.scss` | Bootstrap Sass variable overrides for dark mode |
 | `styles.css` | All visual styling (dot grid, tick marks, etc.) |
 | `index.qmd` | Post listing configuration |
+| `docs/history/` | Archived implementation notes and specs |
 
 ## Adding Posts
 
