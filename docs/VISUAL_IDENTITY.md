@@ -25,19 +25,22 @@ The palette is strictly monochrome. Color accents are forbidden.
 
 ### Dark Mode Palette
 
-Dark mode inverts the monochrome palette while preserving warmth:
+Dark mode translates the "industrial plotting paper" metaphor to a darker surface—think aged dark paper or chalkboard with grid lines. Activated automatically via system preference (`prefers-color-scheme: dark`).
 
 ```
-Dark Paper (bg)       #161615   warm dark, avoids blue-black
-Light Text            #E8E8E6   primary text
-Light Gray            #D4D4D4   secondary emphasis
-Mid Gray              #999999   secondary text
-Subtle Dark           #2A2A29   backgrounds
-Dark Border           #404040   dividers, rules
-Dark Grid             #252524   dot pattern
+Dark Paper (bg)       #1E1D1B   lighter warm dark, like aged dark paper
+Cream Text            #E6E4DF   warm cream, like chalk
+Light Gray            #D0CEC8   secondary emphasis
+Mid Gray              #9C9A94   secondary text (olive undertone)
+Subtle Dark           #2A2926   backgrounds
+Dark Border           #3D3B37   warmer brown-gray dividers
+Dark Grid             #2F2D2A   visible grid (essential to aesthetic)
+Code BG               #252422   warm code blocks
 ```
 
-Theme toggle cycles: system (◐) → light (○) → dark (●)
+The grid visibility is critical—it defines the plotting paper aesthetic.
+
+Code highlighting: `kate` (light) / `zenburn` (dark)
 
 ## Typography
 
@@ -103,7 +106,6 @@ Underlined, black. Hover thickens underline to 2px. No color change.
 |------|---------|
 | `_brand.yml` | Quarto brand config (colors, typography) |
 | `styles.css` | All custom styles (incl. dark mode variables) |
-| `scripts/theme.js` | Theme toggle controller |
 | `fonts/` | Berkeley Mono woff2 files |
 
 ## Influences

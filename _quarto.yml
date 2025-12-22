@@ -33,4 +33,6 @@ format:
     toc-depth: 3
     code-copy: true
     code-overflow: wrap
-    highlight-style: kate
+    highlight-style:
+      light: kate
+      dark: zenburn
