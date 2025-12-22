@@ -95,6 +95,13 @@ body {
   text-transform: lowercase;
 }
 
+.navbar-brand::before {
+  font-family: "bootstrap-icons";
+  content: "\f5c3";
+  margin-right: 0.4rem;
+  font-weight: 400;
+}
+
 .navbar-brand:hover {
   text-decoration: underline;
 }
