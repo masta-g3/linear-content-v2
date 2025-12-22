@@ -1,0 +1,108 @@
+{
+    "text-color": "#1a1a1a",
+    "background-color": "#ffffff",
+    "line-number-color": "#999999",
+    "line-number-background-color": "#ffffff",
+    "text-styles": {
+        "Other": {
+            "text-color": "#1a1a1a"
+        },
+        "Attribute": {
+            "text-color": "#1a1a1a"
+        },
+        "SpecialString": {
+            "text-color": "#666666"
+        },
+        "Annotation": {
+            "text-color": "#999999",
+            "italic": true
+        },
+        "Function": {
+            "text-color": "#1a1a1a"
+        },
+        "String": {
+            "text-color": "#666666"
+        },
+        "ControlFlow": {
+            "text-color": "#1a1a1a",
+            "bold": true
+        },
+        "Operator": {
+            "text-color": "#1a1a1a"
+        },
+        "Error": {
+            "text-color": "#1a1a1a",
+            "underline": true
+        },
+        "BaseN": {
+            "text-color": "#1a1a1a"
+        },
+        "Alert": {
+            "text-color": "#1a1a1a",
+            "bold": true
+        },
+        "Variable": {
+            "text-color": "#1a1a1a"
+        },
+        "BuiltIn": {
+            "text-color": "#1a1a1a"
+        },
+        "Extension": {
+            "text-color": "#1a1a1a"
+        },
+        "Preprocessor": {
+            "text-color": "#666666"
+        },
+        "Information": {
+            "text-color": "#999999"
+        },
+        "VerbatimString": {
+            "text-color": "#666666"
+        },
+        "Warning": {
+            "text-color": "#666666",
+            "italic": true
+        },
+        "Documentation": {
+            "text-color": "#999999",
+            "italic": true
+        },
+        "Import": {
+            "text-color": "#1a1a1a"
+        },
+        "Char": {
+            "text-color": "#666666"
+        },
+        "DataType": {
+            "text-color": "#1a1a1a"
+        },
+        "Float": {
+            "text-color": "#1a1a1a"
+        },
+        "Comment": {
+            "text-color": "#999999",
+            "italic": true
+        },
+        "CommentVar": {
+            "text-color": "#999999",
+            "italic": true
+        },
+        "Constant": {
+            "text-color": "#1a1a1a",
+            "bold": true
+        },
+        "SpecialChar": {
+            "text-color": "#666666"
+        },
+        "DecVal": {
+            "text-color": "#1a1a1a"
+        },
+        "Keyword": {
+            "text-color": "#1a1a1a",
+            "bold": true
+        },
+        "RegionMarker": {
+            "text-color": "#999999"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+---
+title: "linear content"
+subtitle: "thoughts on language, numeric computations, and other things."
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, description, categories]
+  date-format: "MMM D, YYYY"
+  image-placeholder: ""
+page-layout: full
+title-block-banner: true
+---

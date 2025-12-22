@@ -1,0 +1,36 @@
+project:
+  type: website
+
+website:
+  title: "linear content"
+  description: "thoughts on language, numeric computations, and other things."
+  navbar:
+    background: light
+    right:
+      - text: "About"
+        href: about.qmd
+      - icon: github
+        href: https://github.com/
+        aria-label: GitHub
+      - icon: twitter
+        href: https://twitter.com
+        aria-label: Twitter
+  page-footer:
+    left: |
+      Linear Content
+    center: |
+      Built with [Quarto](https://quarto.org/)
+    right: |
+      [GitHub](https://github.com/) · [Twitter](https://twitter.com)
+
+format:
+  html:
+    theme:
+      - cosmo
+      - _brand.yml
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: kate
