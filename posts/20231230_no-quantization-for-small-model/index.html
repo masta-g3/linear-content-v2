@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-12-30">
+<meta name="description" content="Quantization saves memory, but does it hurt quality on smaller 7B models? I ran the same summarization task across Q3, Q4, Q5 and Q8 variants. The differences were smaller than expected.">
+
+<title>No Quantization for Small Model – linear content</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">linear content</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">No Quantization for Small Model</h1>
+                  <div>
+        <div class="description">
+          Quantization saves memory, but does it hurt quality on smaller 7B models? I ran the same summarization task across Q3, Q4, Q5 and Q8 variants. The differences were smaller than expected.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 30, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quantized-models-summarization-task" id="toc-quantized-models-summarization-task" class="nav-link active" data-scroll-target="#quantized-models-summarization-task">Quantized Models &amp; Summarization Task</a></li>
+  <li><a href="#todays-reading-deja-vu---contextual-sparsity-for-efficient-llms-at-inference-time" id="toc-todays-reading-deja-vu---contextual-sparsity-for-efficient-llms-at-inference-time" class="nav-link" data-scroll-target="#todays-reading-deja-vu---contextual-sparsity-for-efficient-llms-at-inference-time">Today’s Reading: <em>Deja Vu - Contextual Sparsity for Efficient LLMs at Inference Time</em></a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#memory-usage-and-runtime-speed" id="toc-memory-usage-and-runtime-speed" class="nav-link" data-scroll-target="#memory-usage-and-runtime-speed">Memory Usage and Runtime Speed</a></li>
+  <li><a href="#quality-of-summaries" id="toc-quality-of-summaries" class="nav-link" data-scroll-target="#quality-of-summaries">Quality of Summaries</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>A while back I wrote a self-note / quick guide on <a href="https://blog.mg3.xyz/20230910_llm_quantization_guide/">how to interpret the different quantization model codes</a>, what they mean and how they affect performance, which I found useful as a general starting guide.</p>
+<p>On this continued note I look at the same question but now specifically focused on how quantization affects performance of small 7B models, particularly <a href="https://huggingface.co/OpenPipe/mistral-ft-optimized-1218"><code>OpenPipe/mistral-ft-optimized-1218</code></a> or <a href="https://huggingface.co/Weyaxi/Seraph-7B"><code>Weyaxi/Seraph-7B</code></a> on summarization tasks.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/battle_quants.png" class="img-fluid figure-img"></p>
+<figcaption>Battle of the Quants</figcaption>
+</figure>
+</div>
+<p><em>The Battle of the Quantized Models, 1927</em></p>
+<section id="quantized-models-summarization-task" class="level2">
+<h2 class="anchored" data-anchor-id="quantized-models-summarization-task">Quantized Models &amp; Summarization Task</h2>
+<p>For this study we will compare the performance of the following quantized model variants: <code>Q3_K_M</code>, <code>Q4_K_M</code>, <code>Q5_K_M</code> and <code>K8_0</code>. All of them are available for download on <a href="https://huggingface.co/TheBloke/mistral-ft-optimized-1218-GGUF">HuggingFace</a>, made available by <a href="https://huggingface.co/TheBloke">TheBloke</a>.</p>
+<p>The task at hand will be the same as on the <a href="https://blog.mg3.xyz/20231216_una-cybertron-7b-v2_analysis/">last blog post</a>, which is <em>recursive summarization by parts</em> (i.e.: iteratively summarizing a long document into a small set of notes; see the blog post for more details or <a href="https://github.com/masta-g3/llmpedia/blob/main/workflow/d0_summarize.py">this script</a> for the related code). I think this task is ideal for our purpose as the iterative nature of the process means that errors accumulate and amplify up to the final summary, making it easier to spot differences in performance.</p>
+<p>We will run the different model versions locally using LM Studio and evaluate them across three different axes: - <strong>Memory Usage</strong>. How much memory does the model use during inference? This is the first metric where we expect to see a difference, as quantization is meant to reduce memory usage. - <strong>Inference Time</strong>. How long does it take for the model to generate a summary? On the <em>recursive summarization by parts</em> framework we actually produce many mini-summaries, so we will look at the distribution of their creation runtime. - <strong>Summary Quality</strong>. How good are the summaries, and how well do they adhere to the guidelines? GPT-4 will be our judge here, allowing us to expedite the process and remove any human bias.</p>
+</section>
+<section id="todays-reading-deja-vu---contextual-sparsity-for-efficient-llms-at-inference-time" class="level2">
+<h2 class="anchored" data-anchor-id="todays-reading-deja-vu---contextual-sparsity-for-efficient-llms-at-inference-time">Today’s Reading: <em>Deja Vu - Contextual Sparsity for Efficient LLMs at Inference Time</em></h2>
+<p>The document we will summarize is the <em>Deja Vu</em> LLM arxiv paper, which is a good choice as it is fairly technical but overall still digestible enough for the layman reader. For reference, here is a summary that the <a href="https://llmpedia.streamlit.app/?arxiv_code=2310.17157">GPT maestro produced</a>; we can use it as a benchmark for our own results:</p>
+<blockquote class="blockquote">
+<p>In their paper “Deja Vu: Contextual Sparsity for Efficient LLMs at Inference Time,” the authors present a new method called “contextual sparsity” to improve the efficiency of Large Language Models (LLMs) during inference without compromising performance. Contextual sparsity identifies specific sets of attention heads and MLP parameters that produce similar outputs to dense models for certain inputs, accelerating LLM inference without affecting model quality. The authors introduce DEJAVU, a system that predicts contextual sparsity on the fly for each layer, reducing OPT-175B’s inference latency by over 2x compared to existing methods. This approach has practical applications in reducing the computational cost of inference for large-scale LLMs, potentially enabling real-time inference on mobile devices or edge computing. DEJAVU uses contextual sparsity to improve LLM efficiency without sacrificing quality, reducing inference time by 4.5x compared to baseline models. The findings demonstrate that contextual sparsity can be applied to any pre-trained LLM without retraining and is compatible with various model architectures, offering significant efficiency gains without sacrificing accuracy.</p>
+</blockquote>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Below are the final summaries produced by each quantized model, where we have requested a summary length of approximately 300 tokens.</p>
+<style>
+/* Custom CSS to replicate Bulma styles for select box and text area */
+
+/* Select box */
+select.custom-select {
+    display: block;
+    width: 100%;
+    height: calc(2.25em + 2px);
+    padding: 0.375em 0.75em;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Text area */
+textarea.custom-textarea {
+    display: block;
+    width: 100%;
+    height: calc(2.25em + 280px);
+    padding: 0.375em 0.75em;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical;
+}
+</style>
+<!-- Select field for model selection with Bulma styles -->
+<div class="field">
+<div class="control">
+<pre><code>&lt;div class="select is-fullwidth"&gt;
+  &lt;select id="model_select" name="model_select" class="custom-select"&gt;
+    &lt;option value="Q3_K_M"&gt;Q3_K_M&lt;/option&gt;
+    &lt;option value="Q4_K_M"&gt;Q4_K_M&lt;/option&gt;
+    &lt;option value="Q5_K_M"&gt;Q5_K_M&lt;/option&gt;
+    &lt;option value="K8_0"&gt;K8_0&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+<!-- Text area for displaying the summary with Bulma styles -->
+<div class="field">
+<div class="control">
+<pre><code>&lt;textarea id="summary_text" name="summary_text" class="custom-textarea"&gt;&lt;/textarea&gt;</code></pre>
+</div>
+</div>
+<script>
+// Define the dictionary with model names and summaries
+var model_summaries = {
+    'Q3_K_M': "The paper ‘Deja Vu: Contextual Sparsity for Efficient LLMs at Inference Time’ introduces a novel approach to improve Large Language Model (LLM) inference efficiency by exploiting contextual sparsity. This sparsity refers to the existence of small sets of attention heads and MLP parameters that yield approximately the same output as the dense model for a given input. Deja Vu (DV) can potentially lead to a 7x parameter reduction for specific inputs while maintaining accuracy, with an average of 85% structured sparse. The method uses a low-cost algorithm to predict contextual sparsity on the fly and an asynchronous and hardware-aware implementation that speeds up LLM inference without compromising quality or in-context learning ability. DV reduces the inference latency of OPT-175B by over 2× compared to the state-of-the-art FasterTransformer and over 6× compared to the widely used Hugging Face implementation, without sacrificing model quality. The method can potentially reduce the computational cost of LLMs while maintaining their impressive performance and in-context learning abilities. DV is compatible with quantization techniques and can be further optimized through hardware-aware sparse matrix multiply implementation. It achieves up to 30% FLOPs reduction in MLP blocks and 25% in attention blocks, with minimal latency increase. The method is applicable to various LLM architectures. Self-attention heads are crucial for learning different projection spaces to perform clustering, which can inform future research on LLM design. The paper does not present any unexpected findings or unusual results but emphasizes the practical benefits of its method. The main contributions of this work are more efficient use of memory resources, improved performance, and the potential for scalable LLM models that can be applied to a wide range of applications. No tables were presented in the paper with specific metrics or findings. The practical benefits of this research include more efficient use of memory resources, improved performance, and the potential for scalable LLM models that can be applied to a variety of applications.",
+    'Q4_K_M': "‘Deja Vu: Contextual Sparsity for Efficient LLMs at Inference Time’ introduces a novel system that utilizes contextual sparsity to enhance the efficiency of large language models (LLMs) during inference time. This approach, called DEJAVU, employs a low-cost algorithm to predict contextual sparsity on the fly given inputs to each layer and an asynchronous and hardware-aware implementation that accelerates LLM inference. The proposed system significantly reduces the inference latency of OPT-175B by over 2× compared to the state-of-the-art FasterTransformer and over 6× compared to the widely used Hugging Face implementation, without compromising model quality. Contextual sparsity offers a promising approach for efficient LLM inference while maintaining performance and special abilities of pre-trained LLMs. DEJAVU is compatible with quantization techniques and can be applied to various LLM architectures and sizes. The paper provides a detailed analysis of the performance of DEJAVU on different models and inference settings, highlighting its potential for improving the efficiency of real-time natural language processing scenarios.",
+    'Q5_K_M': "The paper introduces 'Deja Vu', a system that aims to reduce inference latency for large language models (LLMs) without compromising their quality or in-context learning ability. The concept of contextual sparsity is proposed, which involves small, input-dependent sets of attention heads and MLP parameters that yield approximately the same output as the dense model for a given input. DEJAVU is a system that uses a low-cost algorithm to predict contextual sparsity on the fly given inputs to each layer, along with an asynchronous and hardware-aware implementation that speeds up LLM inference. The paper validates that DEJAVU can reduce the inference latency of OPT-175B by over 2× compared to FasterTransformer and over 6× compared to Hugging Face implementation, without compromising model quality. Contextual sparsity does not require model retraining, preserves quality and in-context learning ability, and leads to speedup in wall-clock time on modern hardware. The paper addresses the challenge of speeding up inference-time sparse LLMs while maintaining quality and in-context learning abilities. Deja Vu is a method that aims to improve the efficiency and accessibility of large language models (LLMs) by reducing computational cost while maintaining accuracy. The approach focuses on contextual sparsity, which involves selectively discarding less important information from the model's internal representations during inference time. This is achieved through a two-stage process: first, a coarse-grained pruning step that removes a large portion of the model's parameters, and second, a fine-tuning step to recover accuracy lost during pruning. The authors propose a new metric called 'contextual sparsity ratio' (CSR) to measure the amount of information discarded by the method. Experiments show that Deja Vu can achieve up to 90% CSR without significant loss in accuracy, resulting in a 3x reduction in computational cost for inference. The authors also demonstrate that Deja Vu can be applied to different LLM architectures and pre-trained models, including GPT-2, BERT, and RoBERTa. Practical applications of Deja Vu include reducing the carbon footprint of LLMs by lowering energy consumption during inference, as well as making LLMs more accessible for resource-constrained devices and users. The method's ability to reduce computational cost without sacrificing accuracy could potentially lead to the development of more powerful and versatile LLMs in the future. Deja Vu is an innovative approach that addresses a critical issue in the field of LLM research, making it easier for researchers and developers to work with large language models while minimizing their environmental impact. The paper's findings could have significant implications for the development of more efficient and accessible AI systems in general.",
+    'K8_0': "The 'Deja Vu' system, introduced in a recent paper, aims to reduce inference time for Large Language Models (LLMs) without compromising their quality or in-context learning ability. The authors propose contextual sparsity, which involves small sets of attention heads and MLP parameters that can approximate the output of a dense model for a given input. This approach has been shown to exist, be accurately predicted, and speed up LLM inference without sacrificing quality or in-context learning ability. A low-cost algorithm is proposed to predict contextual sparsity on the fly based on inputs to each layer. An asynchronous and hardware-aware implementation further speeds up LLM inference. The system was validated using OPT-175B, showing a reduction of 2× in inference latency compared to FasterTransformer and 6× compared to Hugging Face's implementation without compromising model quality. Contextual sparsity has practical applications in reducing the computational cost and energy consumption of LLMs during inference time without sacrificing performance. The paper also investigates contextual sparsity in Large Language Models, finding an average 85% structured sparse representation that can lead to a 7x parameter reduction while maintaining accuracy. The DEJAVU system is proposed to address the challenge of achieving efficiency through predicting and implementing contextual sparsity. Contextual sparsity has much better efficiency-accuracy trade-offs than non-contextual sparsity or static sparsity, with up to 7x improvement."
+};
+
+// Get the select field and text area elements
+var model_select = document.getElementById('model_select');
+var summary_text = document.getElementById('summary_text');
+
+// Define a function that updates the summary text based on the selected model
+function update_summary_text() {
+    var model_name = model_select.value;
+    summary_text.value = model_summaries[model_name];
+}
+
+// Attach the function to the select field
+model_select.addEventListener('change', update_summary_text);
+
+// Call the function once to initialize the text area
+update_summary_text();
+</script>
+<p>The first thing we notice is that not all models are able to produce a summary of the requested length, and only the <code>Q8_0</code> version is able to reach the desired ≤300 token mark. At some point, the other variants are unable to continue the summarization process, and from that iteration onwards they simply copy the text. We can see this behavior on the following token count plot:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/quantization_summary_token_count.png" class="img-fluid figure-img"></p>
+<figcaption>Output summary token count by model type and iteration</figcaption>
+</figure>
+</div>
+<p>We also note that the <code>Q8_0</code> model also converges the fastest to the desired token length, while the more quantized variants seem to summarize the information at a slower rate.</p>
+<section id="memory-usage-and-runtime-speed" class="level3">
+<h3 class="anchored" data-anchor-id="memory-usage-and-runtime-speed">Memory Usage and Runtime Speed</h3>
+<p>Before we continue looking at the summary quality, let’s first look at the memory usage and runtime speed. The following table provides a summary view:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Memory Usage (GB)</th>
+<th>Total Runtime (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q3_K_M</td>
+<td>8.74</td>
+<td>891</td>
+</tr>
+<tr class="even">
+<td>Q4_K_M</td>
+<td>9.54</td>
+<td>675</td>
+</tr>
+<tr class="odd">
+<td>Q5_K_M</td>
+<td>10.30</td>
+<td>859</td>
+</tr>
+<tr class="even">
+<td>K8_0</td>
+<td>12.80</td>
+<td>564</td>
+</tr>
+</tbody>
+</table>
+<p>For <strong>memory usage</strong>, we observe the expected behavior: total RAM utilized increases linearly with the number of bits used for quantization. <code>K8_0</code> uses almost 50% more memory than <code>Q3_K_M</code>, which is significant, but in absolute terms still a manageable amount for my M1 Mac (with 32GB of RAM).</p>
+<p>Interestingly, from a <strong>runtime</strong> perspective, the <code>K0_8</code> model is the fastest to complete, but only because it converged to its final summary at a faster pace. In terms of <em>per chunk</em> runtime, we don’t see clear differences, as indicated on the following graph:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../images/quantization_runtime.png" class="img-fluid figure-img"></p>
+<figcaption>Distribution of chunk summarization runtime by model type</figcaption>
+</figure>
+</div>
+<p>Performing a statistical tests over these distributions reveals that they do indeed have different means, although I believe this is driven more by the token count differences than by the quantization itself. The hypothesis makes sense considering there is no clear ordering or monotonicity in the results.</p>
+</section>
+<section id="quality-of-summaries" class="level3">
+<h3 class="anchored" data-anchor-id="quality-of-summaries">Quality of Summaries</h3>
+<p>Finally we complete the assessment of the different models’ summary quality. To do so, we will pass the four of them to GPT-4 leveraging the following prompt:</p>
+<div id="57eea7a4e21f296f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2023-12-31T03:03:13.090578Z&quot;,&quot;start_time&quot;:&quot;2023-12-31T03:03:13.087222Z&quot;}}" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>EVALUATOR_PROMPT <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">As a distinguished IT professor specializing in large language models and artificial intelligence, you have been approached by the Nobel Prize Association. They seek your expertise in evaluating four short summaries of a seminal AI paper. The author of the best summary will be awarded the Nobel Prize of the year. Recognizing the significance of this task, you approach it with utmost seriousness.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">Below are the four summaries submitted by the candidates, identified as "candidates-Q". The  Nobel Prize Association has requested these summaries to be concise and informative, of 300 words or less.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">Q3_K_M</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="sc">{Q3_K_M}</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">Q4_K_M</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="sc">{Q4_K_M}</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">Q5_K_M</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="sc">{Q5_K_M}</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="st">K8_0</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="sc">{K8_0}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="st">Your assessment should focus on the following criteria:</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="st">0) Main Message: What is the core message of the review? What are its most interesting and practical aspects?</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="st">1) Conciseness: Did the author adhere to the 300 word limit, providing a succinct yet informative review?</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="st">2) Readability, Flow, and Prosaic Performance: How well-written is the review?  Is it consistent and clear? Does it offer deep analysis, or is it superficial?</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="st">3) Insights and Novelty: Does the review offer insightful, unexpected, or otherwise interesting findings? Does it provide precise metrics and figures to support its claims? Is it worth reading for an AI professional, or merely repetitive?</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="st">4) Overall Integrity: How commendable is the summary? Does it merit a Nobel Prize?</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="st">Please evaluate each summary in detail and then score each attribute on a scale of 1 to 5. The overall integrity will determine the final winner. Present your results in a numerical table. Compare and contrast to reach the best conclusion, and deliberate as needed. Review your decisions thoroughly before making a final commitment."""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The results are presented below, where we observe <code>K8_0</code> dominating by excelling in <em>conciseness</em> and <em>readability</em>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 28%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model Version</th>
+<th>Conciseness</th>
+<th>Readability and Prosaic</th>
+<th>Insights and Novelty</th>
+<th>Overall Integrity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Q3_K_M</strong></td>
+<td>2</td>
+<td>4</td>
+<td>3</td>
+<td><strong>3</strong></td>
+</tr>
+<tr class="even">
+<td><strong>Q4_K_M</strong></td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td><strong>4</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Q5_K_M</strong></td>
+<td>2</td>
+<td>4</td>
+<td>4</td>
+<td><strong>3</strong></td>
+</tr>
+<tr class="even">
+<td><strong>K8_0</strong></td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td><strong>5</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>It seems there are not too many advantages of applying quantization to small models unless one is memory constrained. There seems to be a noticeable performance hit for the more heavily quantized models, and runtime might also degrade considering the model becomes less steerable and might not adhere to the user guidelines, including conciseness and token length. The technique seems better reserved for larger models, where the memory savings are more significant and the performance hit is likely less noticeable.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Linear Content</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://github.com/">GitHub</a> · <a href="https://twitter.com">Twitter</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

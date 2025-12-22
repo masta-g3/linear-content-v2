@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2023-12-16">
+<meta name="description" content="There’s drama on HuggingFace about data contamination in top-ranked models. I’ve been using una-cybertron-7B-v2 for summarization—time to take a closer look at what’s actually going on.">
+
+<title>A Closer Look at una-cybertron-7B-v2 for Summarization – linear content</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">linear content</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">A Closer Look at una-cybertron-7B-v2 for Summarization</h1>
+                  <div>
+        <div class="description">
+          There’s drama on HuggingFace about data contamination in top-ranked models. I’ve been using una-cybertron-7B-v2 for summarization—time to take a closer look at what’s actually going on.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 16, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#summarization-task" id="toc-summarization-task" class="nav-link active" data-scroll-target="#summarization-task">Summarization Task</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#chain-of-verification-reduces-hallucination-in-large-language-models" id="toc-chain-of-verification-reduces-hallucination-in-large-language-models" class="nav-link" data-scroll-target="#chain-of-verification-reduces-hallucination-in-large-language-models"><em>Chain-of-Verification Reduces Hallucination in Large Language Models</em></a></li>
+  <li><a href="#large-language-models-cannot-self-correct-reasoning-yet" id="toc-large-language-models-cannot-self-correct-reasoning-yet" class="nav-link" data-scroll-target="#large-language-models-cannot-self-correct-reasoning-yet"><em>Large Language Models Cannot Self-Correct Reasoning Yet</em></a></li>
+  </ul></li>
+  <li><a href="#results-for-white-box-transformers-via-sparse-rate-reduction-compression-is-all-there-is" id="toc-results-for-white-box-transformers-via-sparse-rate-reduction-compression-is-all-there-is" class="nav-link" data-scroll-target="#results-for-white-box-transformers-via-sparse-rate-reduction-compression-is-all-there-is">Results for <em>White-Box Transformers via Sparse Rate Reduction: Compression Is All There Is?</em></a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding Remarks</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<style>
+/* Custom CSS to replicate Bulma styles for select box and text area */
+
+/* Select box */
+select.custom-select {
+    display: block;
+    width: 100%;
+    height: calc(2.25em + 2px);
+    padding: 0.375em 0.75em;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Text area */
+textarea.custom-textarea {
+    display: block;
+    width: 100%;
+    height: calc(2.25em + 280px);
+    padding: 0.375em 0.75em;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical;
+}
+</style>
+<p>There is some drama going on in the HuggingFace community boards around the possibility of <a href="https://bdtechtalks.com/2023/07/17/llm-data-contamination/">data contamination</a> on some of the top performing open source LLMs, affecting the reliability of their own <a href="https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard">leaderboard</a>. One of the models under discussion is <strong>una-cybertron-7B-v2</strong>, a Mistral fine-tune that I have been using for summarization tasks with pretty good results. According to the author, the model is tamed using the <em>Uniform Neural Alignment</em>, an undisclosed technique on which he might publish a paper later. He also states the following:</p>
+<blockquote class="blockquote">
+<p><em>UNA : Uniform Neural Alignment. It goes in the Attention and the multiperceptrons, and it does what it says. There are multiple phases… Juanako = UNAv1 only implemented at perceptron level. <strong>Cybertron = UNAv2 .. applied both MLP and Attention..</strong> Xaberius = UNAv1.. meaning I can release a much more powerful version of it. Its based on platypus-34b and if u compare the performance.. its not too distant from it. And if u compare what UNA increases (Rationale/Logic capacity).. u’ll see the pattern across them.</em></p>
+</blockquote>
+<p>A somewhat mysterious and not totally clear message, but interesting nonetheless. The underlying situation is that the community is divided, with some accusing the author of intentionally gaming the leaderboard while others vouch for the superior performance of his models, whatever the underlying fine-tune technique happens to be.</p>
+<p>I originally selected the model for my use case (summarization) based on <em>vibe checks</em>, as I had the impression that it did produce better summaries compared to the base Mistral or even <strong>OpenHermes-2.5-neural-chat-7B-v3-1-7B</strong> blend, but maybe I was deceived by chance and flashy numbers? In this blog post I aim to sort this out by doing a formal comparison that will hopefully settle things down.</p>
+<section id="summarization-task" class="level2">
+<h2 class="anchored" data-anchor-id="summarization-task">Summarization Task</h2>
+<p>To test the models against each other, we will perform a <em>recursive summarization by parts</em> task. This involves iteratively summarize a long document into a small set of notes. First, we summarize the paper into notes, then those notes into distilled notes, and further into extra-distilled notes, and so on. We will use the following prompt, applying it iteratively over small chunks of the document until the entire text is processed. Then, we will recursively apply this procedure over the results until we reach a set of summary notes with a total token length of less than 500.</p>
+<div id="3dbd5ac2b7d6005e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2023-12-17T00:23:12.704008Z&quot;,&quot;start_time&quot;:&quot;2023-12-17T00:23:12.578420Z&quot;}}" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>SUMMARIZE_BY_PARTS_TEMPLATE <span class="op">=</span> <span class="st">"""You are an applied AI researcher specialized in the field of Large Language Models (LLMs), and you are currently reviewing the academic paper "</span><span class="sc">{paper_title}</span><span class="st">". Your goal is to analyze the paper, identify the main contributions and most interesting findings, and write a bullet point list summary of it in your own words. This summary will serve as reference for future LLM researchers within your organization, so it is very important that you are able to convey the main ideas in a clear, complete and concise manner.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">Read over the following section and take notes. Use a numbered list to summarize the main ideas. </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">[...]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="sc">{content}</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">[...]</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">## Guidelines</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">- Focus on the bigger picture and the main ideas, rather than on the details. </span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">- Be sure to explain any new concept or term you introduce. Explain how things work clearly.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="st">- Take notes of the most important numeric results and metrics (i.e. 30% accuracy, 4.5 times faster, etc.).</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">- If a table is presented just report back the main findings.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">- Include examples in your notes that help clarify the main ideas.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">- Highlight any practical applications or benefits of the paper's findings.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">- Highlight unusual or unexpected findings.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">- Take notes in the form of a numbered list. Do not include headers or any other elements.</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">- Do not include more than 10 items in your list.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">- Your summary must be shorter than the original text. Remove any filler or duplicate content.</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, to make the output notes easier to digest, we will run them through a final LLM call, applying the following copy-editor prompt for it:</p>
+<div id="43cbed0f672f0f58" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2023-12-17T00:23:44.198380Z&quot;,&quot;start_time&quot;:&quot;2023-12-17T00:23:44.099087Z&quot;}}" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>NARRATIVE_SUMMARY_PROMPT <span class="op">=</span> <span class="st">"""You are an expert New York Times technology writer tasked with writing a summary of "</span><span class="sc">{paper_title}</span><span class="st">". Your task is to read the following set of notes and convert them into an engaging paragraph.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">{previous_notes}</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">## Guidelines</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">- You can reorganize and rephrase the notes in order to improve the summary's flow.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">- Do not alter the meaning of the notes.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">- Avoid repetition and filler content.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">- Abstain from making unwarranted inferences.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">- Avoid bombastic language. </span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">- Include metrics and statistics in your report  (i.e. 30% accuracy, 4.5 times faster, etc.).</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">- Include descriptions and explanations of any new concepts or terms. Describe how new models or methodologies work.</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">- Highlight any practical applications or benefits of the paper's findings.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">- Highlight unusual or unexpected findings.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>To keep things short, we will focus on summarizing three arXiv papers, the last of which is highly technical. We will manually inspect the results to decide which model performs the best job. The papers under analysis will be the following:</p>
+<p><strong><a href="http://llmpedia.streamlit.app/?arxiv_code=2309.11495">Chain-of-Verification Reduces Hallucination in Large Language Models</a></strong> &gt;<em>Abstract:</em> Generation of plausible yet incorrect factual information, termed hallucination, is an unsolved issue in large language models. We study the ability of language models to deliberate on the responses they give in order to correct their mistakes. We develop the Chain-of-Verification (CoVe) method whereby the model first (i) drafts an initial response; then (ii) plans verification questions to fact-check its draft; (iii) answers those questions independently so the answers are not biased by other responses; and (iv) generates its final verified response. In experiments, we show CoVe decreases hallucinations across a variety of tasks, from list-based questions from Wikidata, closed book MultiSpanQA and longform text generation.</p>
+<p><strong><a href="http://llmpedia.streamlit.app/?arxiv_code=2310.01798">Large Language Models Cannot Self-Correct Reasoning Yet</a></strong> &gt;<em>Abstract:</em> Large Language Models (LLMs) have emerged as a groundbreaking technology with their unparalleled text generation capabilities across various applications. Nevertheless, concerns persist regarding the accuracy and appropriateness of their generated content. A contemporary methodology, self-correction, has been proposed as a remedy to these issues. Building upon this premise, this paper critically examines the role and efficacy of self-correction within LLMs, shedding light on its true potential and limitations. Central to our investigation is the notion of intrinsic self-correction, whereby an LLM attempts to correct its initial responses based solely on its inherent capabilities, without the crutch of external feedback. In the context of reasoning, our research indicates that LLMs struggle to self-correct their responses without external feedback, and at times, their performance might even degrade post self-correction. Drawing from these insights, we offer suggestions for future research and practical applications in this field</p>
+<p><strong><a href="http://llmpedia.streamlit.app/?arxiv_code=2311.13110">White-Box Transformers via Sparse Rate Reduction: Compression Is All There Is?</a></strong> &gt;<em>Abstract:</em> In this paper, we contend that a natural objective of representation learning is to compress and transform the distribution of the data, say sets of tokens, towards a low-dimensional Gaussian mixture supported on incoherent subspaces. The goodness of such a representation can be evaluated by a principled measure, called sparse rate reduction, that simultaneously maximizes the intrinsic information gain and extrinsic sparsity of the learned representation. From this perspective, popular deep network architectures, including transformers, can be viewed as realizing iterative schemes to optimize this measure. Particularly, we derive a transformer block from alternating optimization on parts of this objective: the multi-head self-attention operator compresses the representation by implementing an approximate gradient descent step on the coding rate of the features, and the subsequent multi-layer perceptron sparsifies the features. This leads to a family of white-box transformer-like deep network architectures, named CRATE, which are mathematically fully interpretable. We show, by way of a novel connection between denoising and compression, that the inverse to the aforementioned compressive encoding can be realized by the same class of CRATE architectures. Thus, the so-derived white-box architectures are universal to both encoders and decoders. Experiments show that these networks, despite their simplicity, indeed learn to compress and sparsify representations of large-scale real-world image and text datasets, and achieve performance very close to highly engineered transformer-based models: ViT, MAE, DINO, BERT, and GPT2. We believe the proposed computational framework demonstrates great potential in bridging the gap between theory and practice of deep learning, from a unified perspective of data compression.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Below we look at the summaries produced by the different models and analyze their quality.</p>
+<section id="chain-of-verification-reduces-hallucination-in-large-language-models" class="level3">
+<h3 class="anchored" data-anchor-id="chain-of-verification-reduces-hallucination-in-large-language-models"><em>Chain-of-Verification Reduces Hallucination in Large Language Models</em></h3>
+<div class="field">
+<div class="control">
+<pre><code>&lt;div class="select is-fullwidth"&gt;
+  &lt;select id="model_select_a" name="model_select_a" class="custom-select"&gt;
+    &lt;option value="Mistral-7B-Instruct-v0.2"&gt;Mistral-7B-Instruct-v0.2&lt;/option&gt;
+    &lt;option value="OpenHermes-2.5-neural-chat-7B-v3-1-7B"&gt;OpenHermes-2.5-neural-chat-7B-v3-1-7B&lt;/option&gt;
+    &lt;option value="una-cybertron-7B-v2"&gt;una-cybertron-7B-v2&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+<div class="field">
+<div class="control">
+<pre><code>&lt;textarea id="summary_text_a" name="summary_text_a" class="custom-textarea"&gt;&lt;/textarea&gt;</code></pre>
+</div>
+</div>
+<script>
+var model_summaries_a = {
+    'Mistral-7B-Instruct-v0.2': "[...] Question Question Question Question,, ,,, Question, Question Question Question, Question, Question Question Question Question Question Question Question Question,,,, Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question Question,, Question Question,,,, Question Question Question Question Question Question Question Question Question Question Question,,,,, Question Question Question Question Question Question Question Question Question Question,,,,, Question Question Question,,,,,,, Question Question,,,,,,,,,,,,, in,,, Question Question,,,,,, Question,,, \n Question, Question, Question Question Question Question,,,, a Question Question Question Question Question Question Question Question Question Question Question Question Question Question, ,,,,,,,,,,,,,,,,,,,,,,,,,,,, ,,, , \n,,,,,,,,,,,,,,, Question,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n\n\n,,,, , a Question, Question,,,, and, ,, ,,,,,,,, , , ,,,,,\n\n\n\n,,,,,, ,,, Question,,,,,,,,,,,,,,,,,,,,,,,, ,,,,, a Question,,,,, , ,,,,, ,,,,, \n\n\n,,,,,, ,,,,,,,,,,,,,,,,,, , , ,,,,,,,,,,,,,,,,, , a Question,,,, \n\n\n\n,,,, , ,,,, \n\n\n\n,, , ,,,, , ,,,,,,,,,, \n,,,,,, , ,,,,,,, a Question,,,,,,,,,,, , ,,,,,,, Question,,, ,,,,, , ,,,,, ,,,, ,\n, the Question,,,,, , , ,, a Question,,, , ,,, ,,,,,,, , , , \n, Q Question, , , , \n\n\n, \n, ,,,,, ,, , , ,,, , , a Question, , \n\n, ,,,,,, , \n,,, and,,,,,,,,,, , ,,,,, ,,,,,,, ,,, , ,,,,, \n, a Question,,,, , ,,, , Q Question,,,,,,,,,, , , ,, , ,,,, , ,,,, , ,,,,, \n, , ,, , a Question,,,, , , \n\n, , , , , \n, Q, , \n, , , , , , , ,, ,,, and, , , , ,,, , a Question,,,,,, , ,, ,,,,,,,,, ,,, , Q,\n\n\n,,,,, , \n,,,,,, a,,,, , , \n,,,,, and,, , \n,, , \n,,,, ,,,,,, , \n, Q, , , \n, \n\n\n\n,,, , , a Question,,,,,,,,,, , , , \n,,,,,,,, \n\n\n\n\n,,, \n,,, \n, Q, , , \n\n\n\n\n\n\n\n\n,,, , a Question, , and,,,,,, \n,,,,,,,, \n,,,,, \n,, , \n, \n\n\n,,\n, Q,, \n\n\n\n\n\n,,,,,\n,,\n,,, a Question,,,,,,,,,,,,, , , , \n,,,,,, \n\n\n,,,,,,,,,, Q, \n,,,,,,,,,,,,,,,,,,, a,,,,,, \n, \n-\n \n \n,,\n,,,,,,,,,,,,,, in,,,,,,,,,,,,\n,,,,,,,,,,,,,\n \n,,,, Q,,\n\n,,,,,\n, a,,,,,,,,,. I, \n\n,,,,,,,,,,,,,,,,,,,,,,,, \n\n\n\n,\n,,,,,, \n \n\n,,,,,,,,\n\n,,,,,,,,,,, Q,,,, \n\n\n\n \n \n,,,, \n # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n \n \n \n\n\n,\n  \n \n\n\n \n\n, \n, in a \n\n \n \n \n,,, \n \n \n # \n \n,, Q,,, \n \n,,,,\n,, \n\n \n, \n, \n # # \n\n,,,,, \n \n \n \n a,,\n \n \n \n \n \n \n \n # # # # # # # # # \n\n\n \n # # # # # # # # # # # # # # # # # # -. # # # # # # # # # # # \n # , \n \n # # # # # # # # # # # \n \n \n \n # # # # # # # # # # # # # # \n \n # # # # # # # # \n \n \n # # # # # # , -,\n \n \n # # \n \n \n \n ,  \n # # # # # # # # # # # # # # # \n # # \n # \n \n . # # # # # # # # # # # # # # # \n # # # # # # # # # # # \n,, \n # \n # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ,,,,,\n # \n \n \n \n \n\n\n\n , a \n # # \n \n \n\n\n \n \n \n # # # # # # # # \n \n # \n \n , \n \n # \n \n \n \n \n \n \n,,,. # # # # # # # # # # # # # # # # # \n \n-,\n \n\n, a \n \n \n \n\n \n,, \n \n # # # \n # # # # \n # \n  \n \n # # # # # # # # # # # # # # # # # # # # # # # # \n \n \n \n \n \n \n . # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # ,,, \n\n-,,,,,,,,,, \n[...]",
+    'OpenHermes-2.5-neural-chat-7B-v3-1-7B': "Chain-of-Verification (COVE) is a novel approach to reduce hallucination in large language models by breaking tasks into smaller subtasks and verifying each step before progressing. This method encourages self-critique, leading to improved responses. Practical applications of COVE include AI assistants, chatbots, question-answering systems, healthcare, finance, and AI-assisted writing. While COVE addresses factual inaccuracies, it does not tackle other types of hallucinations like incorrect reasoning or opinions. To improve accuracy and reliability in large language models (LLMs), further research is necessary to address the ongoing challenge of hallucination.\nThe study introduces CoVe Factor, a new method for measuring effectiveness, with an example in longform generation. \nIn experiments, the most effective method was CoVe Factor + Revise, which involved cross-checking executed verifications and regenerating responses using consistent facts. The importance of explicit reasoning and verification techniques in LLMs is emphasized to enhance performance and reduce hallucinations.\nThe paper focuses on reducing hallucination and improving accuracy in LLMs through verification methods like COVE. Further research is encouraged to explore other ways of utilizing verification techniques to enhance LLMs' capabilities. By verifying information consistency, the CoVe method leads to more accurate and trustworthy results in language processing tasks, ultimately benefiting practical applications of these findings and leading to better performance, accuracy, and trustworthiness in large language models.",
+    'una-cybertron-7B-v2': "Chain-of-Verification (COVE) is a novel approach to reduce hallucinations in large language models (LLMs). It involves generating an initial response, planning verification questions based on that response, answering those questions independently, and finally incorporating the analysis into a revised response. COVE's performance is comparable to human experts on certain tasks, suggesting its potential for improving AI systems' quality. The method can be applied to any LLM without additional training or fine-tuning. In factored variants, separate verification steps attend only to specific contexts, leading to further performance gains across list-based questions, closed book QA, and longform text generation tasks. Across all three tasks, factored variants consistently outperform the joint approach by 10% in list-based questions, up to 25% in closed book QA, and a 30% increase in accuracy with 4.5 times faster execution time in longform text generation. COVE's verification method can enhance the accuracy and reliability of AI-generated responses in various domains, leading to better user experiences and increased trust in AI systems."
+};
+
+// Get the select field and text area elements
+var model_select_a = document.getElementById('model_select_a');
+var summary_text_a = document.getElementById('summary_text_a');
+
+// Define a function that updates the summary text based on the selected model
+function update_summary_text_a() {
+    var model_name_a = model_select_a.value;
+    summary_text_a.value = model_summaries_a[model_name_a];
+}
+
+// Attach the function to the select field
+model_select_a.addEventListener('change', update_summary_text_a);
+
+// Call the function once to initialize the text area
+update_summary_text_a();
+</script>
+<section id="analysis" class="level4">
+<h4 class="anchored" data-anchor-id="analysis"><em>Analysis</em></h4>
+<p>In this first paper summary, we observe that <strong>Mistral Instruct</strong> forgot to emit the <code>&lt;|endoftext|&gt;</code> token, resulting in a never-ending stream of garbage. The other two models perform decently at summarization, although <strong>una-cybertron</strong> does a better job as it adhered to my instruction to reply in a single paragraph, include metrics, and produce a more readable text.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mistral-7B-Instruct-v0.2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>OpenHermes-2.5-neural-chat-7B-v3-1-7B</td>
+<td>0.7</td>
+</tr>
+<tr class="odd">
+<td>una-cybertron-7B-v2</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="large-language-models-cannot-self-correct-reasoning-yet" class="level3">
+<h3 class="anchored" data-anchor-id="large-language-models-cannot-self-correct-reasoning-yet"><em>Large Language Models Cannot Self-Correct Reasoning Yet</em></h3>
+<div class="field">
+<div class="control">
+<pre><code>&lt;div class="select is-fullwidth"&gt;
+  &lt;select id="model_select_b" name="model_select_b" class="custom-select"&gt;
+    &lt;option value="Mistral-7B-Instruct-v0.2"&gt;Mistral-7B-Instruct-v0.2&lt;/option&gt;
+    &lt;option value="OpenHermes-2.5-neural-chat-7B-v3-1-7B"&gt;OpenHermes-2.5-neural-chat-7B-v3-1-7B&lt;/option&gt;
+    &lt;option value="una-cybertron-7B-v2"&gt;una-cybertron-7B-v2&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+<div class="field">
+<div class="control">
+<pre><code>&lt;textarea id="summary_text_b" name="summary_text_b" class="custom-textarea"&gt;&lt;/textarea&gt;</code></pre>
+</div>
+</div>
+<script>
+var model_summaries_b = {
+    'Mistral-7B-Instruct-v0.2': "In recent years, Large Language Models (LLMs) have emerged as groundbreaking technology with unparalleled text generation capabilities across various applications. However, concerns persist regarding the accuracy and appropriateness of generated content by LLMs.\nTo address these issues, self-correction has been proposed as a remedy to improve the accuracy and appropriateness of generated content by LLMs. Self-correction refers to the ability of an LLM to refine its responses based on feedback to its previous outputs.\nDespite the potential benefits of self-correction in LLMs, the underlying mechanics and efficacy of self-correction in LLMs remain underexplored. To critically examine the self-correction capabilities of LLMs, a recent paper focused on reasoning as a specific application of self-correction in LLMs.\nThe authors argued that understanding the intrinsic capabilities of LLMs is crucial because high-quality external feedback is unavailable in many real-world applications. The paper reported that when tested on a task involving intrinsic self-correction, an LLM struggled to amend its prior responses and even deteriorated in performance post self-correction.\nThe authors suggested that the limitations of intrinsic self-correction may stem from the fact that LLMs are fundamentally limited by their lack of understanding of the world and the context in which they operate.\nTo improve the ability of LLMs to self-correct reasoning errors effectively, several approaches have been proposed. These include developing more advanced LLM architectures or incorporating external knowledge sources into LLMs.\nOne promising approach is to develop more advanced LLM architectures that are specifically designed to enhance their self-correction capabilities. For example, some researchers have proposed using hierarchical or modular LLM architectures that allow for the separation of different aspects of reasoning and the ability to refine responses based on feedback from multiple sources.\nAnother promising approach is to incorporate external knowledge sources into LLMs in order to enhance their self-correction capabilities by providing them with additional context and information that can help them better understand the world and the context in which they operate. For example, some researchers have proposed using external knowledge sources such as databases, encyclopedias, or other sources of structured or unstructured data to provide LLMs with additional context and information that can help them better understand the world and the context in which they operate.\nIn conclusion, self-correction has been proposed as a remedy to improve the accuracy and appropriateness of generated content by LLMs. However, the underlying mechanics and efficacy of self-correction in LLMs remain underexplored. To critically examine the self-correction capabilities of LLMs, researchers have focused on reasoning as a specific application of self-correction in LLMs. Through their research, these scholars have shed light on the limitations of intrinsic self-correction and the potential benefits of developing more advanced LLM architectures or incorporating external knowledge sources into LLMs to enhance their self-correction capabilities.",
+    'OpenHermes-2.5-neural-chat-7B-v3-1-7B': "Large Language Models (LLMs) have shown impressive text generation capabilities, but they struggle with accuracy and appropriateness, making self-correction a potential solution for improving performance. A recent study investigates intrinsic self-correction in LLMs for reasoning tasks without external feedback, revealing that they struggle to self-correct their reasoning effectively and sometimes degrade performance after self-correction. The findings emphasize the need for further exploration into self-correction mechanisms and their impact on LLM performance.\nImproving LLMs' reasoning capabilities is crucial for critical applications in decision-making, education, and healthcare. However, current models like GPT-4 still have limitations in self-correction despite existing methods such as internal and external feedback. External resources significantly impact performance in realistic settings, highlighting the need to improve LLMs' self-correction abilities.\nThe study presents a framework for understanding current limitations and areas of improvement for LLMs, which has significant implications on various applications relying on AI systems' reasoning abilities. Addressing these limitations can lead to more accurate decision-making processes in AI systems, potentially leading to unexpected findings guiding future research efforts in this field. The paper serves as a foundation for advancing the field of LLMs towards self-correction and better reasoning abilities.",
+    'una-cybertron-7B-v2': "A recent study has revealed that large language models (LLMs) struggle to self-correct their reasoning without external guidance, indicating a lack of understanding and self-awareness within these AI systems. While LLM performance may improve in some cases, it can also degrade after self-correction, suggesting limited intrinsic self-correction capabilities. This highlights the need for further research into enhancing LLMs' self-correcting abilities. Practical applications could benefit from incorporating human supervision or external feedback to boost model performance. Future work should focus on improving intrinsic self-correction mechanisms and understanding how LLMs learn from their mistakes, addressing safety concerns in AI models, particularly for reasoning tasks. Intrinsic self-correction remains a promising area for research, with potential implications for enhancing the accuracy and reliability of LLMs. The study investigates intrinsic self-correction capabilities without external feedback, crucial for real-world applications. Despite their ability to learn from mistakes and improve through self-correction, LLMs still require additional guidance to achieve perfect accuracy in reasoning tasks. Intrinsic self-correction tests show limited improvements in reasoning benchmarks for GPT-3.5 and GPT-4, indicating that these models struggle with self-correcting their reasoning."
+};
+
+// Get the select field and text area elements
+var model_select_b = document.getElementById('model_select_b');
+var summary_text_b = document.getElementById('summary_text_b');
+
+// Define a function that updates the summary text based on the selected model
+function update_summary_text_b() {
+    var model_name_b = model_select_b.value;
+    summary_text_b.value = model_summaries_b[model_name_b];
+}
+
+// Attach the function to the select field
+model_select_b.addEventListener('change', update_summary_text_b);
+
+// Call the function once to initialize the text area
+update_summary_text_b();
+</script>
+<section id="analysis-1" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-1"><em>Analysis</em></h4>
+<p><strong>Mistral-Instruct</strong> is able to produce a complete and coherent summary for this second paper. Good! Although it’s a bit longer than the one paragraph I requested and maintains a bullet-point-like format, the content seems to be of pretty high quality. <strong>OpenHermes-2.5-neural-chat</strong> and <strong>una-cybertron</strong> both do a good job, and I don’t think either summary is superior to the other.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mistral-7B-Instruct-v0.2</td>
+<td>0.8</td>
+</tr>
+<tr class="even">
+<td>OpenHermes-2.5-neural-chat-7B-v3-1-7B</td>
+<td>0.9</td>
+</tr>
+<tr class="odd">
+<td>una-cybertron-7B-v2</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="results-for-white-box-transformers-via-sparse-rate-reduction-compression-is-all-there-is" class="level2">
+<h2 class="anchored" data-anchor-id="results-for-white-box-transformers-via-sparse-rate-reduction-compression-is-all-there-is">Results for <em>White-Box Transformers via Sparse Rate Reduction: Compression Is All There Is?</em></h2>
+<div class="field">
+<div class="control">
+<pre><code>&lt;div class="select is-fullwidth"&gt;
+  &lt;select id="model_select_c" name="model_select_c" class="custom-select"&gt;
+    &lt;option value="Mistral-7B-Instruct-v0.2"&gt;Mistral-7B-Instruct-v0.2&lt;/option&gt;
+    &lt;option value="OpenHermes-2.5-neural-chat-7B-v3-1-7B"&gt;OpenHermes-2.5-neural-chat-7B-v3-1-7B&lt;/option&gt;
+    &lt;option value="una-cybertron-7B-v2"&gt;una-cybertron-7B-v2&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</div>
+<div class="field">
+<div class="control">
+<pre><code>&lt;textarea id="summary_text_c" name="summary_text_c" class="custom-textarea"&gt;&lt;/textarea&gt;</code></pre>
+</div>
+</div>
+<script>
+var model_summaries_c = {
+    'Mistral-7B-Instruct-v0.2': "The paper proposes CRATE, a white-box transformer architecture for image classification tasks.\nCRATE is able to learn more efficient and effective representations of data compared to existing deep learning models.\nThe paper demonstrates that CRATE achieves performance very close to these highly engineered transformer-based models on large-scale real-world image and text datasets. [...]\nensancingclensing,densingensensing clensingclensing,clenseancingclensing,<ensing,autoensing,ancesanningersensors thatancingalautoencingersensingersensensing,autoensingensors,\nensive\nensing,\nersensingclensing,autoautoautoautoautoreancingensingclensingensors arecingensingclensingclenses,autoensingingensingauto\ners\n\nensingensinganancesteracingensingensingensors,autoensingsanningensingensingensingensingens\nancingensors.autoatorsencingensors,autoautoautoautoautoersensingensors, autoenseautolingancingensors,fances,clancestersensingensingensingensingensensingensors.cakingsensingancers andautoightensesingensesensingensorsivelensesensingensingensacingensingensingensors,s\nensingensors,ensingensingensors\nensingensors,\nensingensingensingensingensorspaceensingensors;9ensingensors,dantakersensanensesis-\nensors,nancesementensestersancingensors,cight``ancers,auto [...]",
+    'OpenHermes-2.5-neural-chat-7B-v3-1-7B': "The 'White-Box Transformers via Sparse Rate Reduction' paper introduces a novel perspective on representation learning as data compression and transformation towards low-dimensional Gaussian mixtures supported on incoherent subspaces. It proposes sparse rate reduction to evaluate this representation, aiming for intrinsic information gain and extrinsic sparsity. The study derives a new transformer block called crate from alternating optimization on parts of the objective, leading to white-box transformer-like architectures with mathematical interpretability. The paper connects denoising and compression, showing that inverse compressive encoding can be realized by the same class of crate architectures. The proposed framework bridges theory and practice in deep learning from a unified perspective of data compression. Networks learn to compress and sparsify representations, achieving performance close to highly engineered transformer-based models. Main contributions include a new perspective on representation learning, the novel measure called sparse rate reduction, and the introduction of white-box transformer-like architectures called crate. Practical applications could be in improving efficiency and interpretability of deep learning models while maintaining performance levels. The paper introduces CRATE, a new approach to representation learning through compressive encoding and decoding for efficient and compact LLMs, achieving significant compression rates without sacrificing performance on various tasks. Future research directions include exploring other methods for evaluating the quality of learned representations in task-agnostic settings and applying the method to other deep learning architectures. The paper explores model compression and optimization through transformers, extending to various neural networks. Deep learning's role in representation learning can improve transformer architectures. Transformers implicitly minimize Kolmogorov complexity related to compression. Improving transformer architectures and their applications require better understanding and optimization. Research on feature representation learning is crucial for enhancing performance. The White-Box Transformers via Sparse Rate Reduction framework aims to improve data distribution learning and sampling efficiency, using a transformer-like encoder for compressing data into structured representations with sparsity and rate reduction measures. The proposed approach outperforms existing methods in accuracy and efficiency on benchmark datasets. A new objective called sparse rate reduction is introduced, optimizing intrinsic complexity (coding rate reduction) and extrinsic simplicity (sparsity). Crate architecture demonstrates competitive performance on various learning tasks using large-scale real-world datasets. Sparse rate reduction leads to linearized, sparse, and compressed representations with low or no redundancy. The main contribution is a practical method for compressing transformer models without sacrificing performance, which can be applied across various domains, including NLP tasks, computer vision, and speech recognition. Efficient token set compression enhances model performance and efficiency while maintaining performance, potentially benefiting resource utilization, faster processing, and more accessible AI models with reduced size. Compression techniques improve model performance and efficiency without compromising performance, opening doors for various applications in different domains.",
+    'una-cybertron-7B-v2': "The paper proposes a novel perspective on representation learning, viewing it as compressing and transforming data into low-dimensional Gaussian mixtures supported by incoherent subspaces. This approach introduces sparse rate reduction to evaluate the quality of these representations, maximizing both intrinsic information gain and extrinsic sparsity. The authors argue that popular deep network architectures, including transformers, can be seen as iterative schemes optimizing this measure.\nA white-box transformer-like architecture called CRATE (Compressive Representation Architecture) is derived from alternating optimization on parts of the sparse rate reduction objective. Experiments show that networks learn to compress and sparsify representations in large-scale real-world image and text datasets, achieving performance comparable to highly engineered transformer-based models.\nCRATE (Compressive Rate-based Attention Transformer) is introduced as a white-box compression technique for transformers, aiming for interpretable and efficient models by reducing the number of parameters in these architectures. The paper's main contributions include learning parsimonious representations through unrolled optimization, understanding self-attention as gradient descent on coding rates, and using MLPs for sparse coding.\nThe overall architecture, CRATE (Compressive Rate-based Attention Transformer), is presented with white-box decoding via structured denoising and diffusion. Experimental evaluations demonstrate the effectiveness of CRATE in various practical tasks such as supervised image classification, image completion, self-supervised learning, and pre-training language models.\nCRATE achieves up to 30% parameter reduction while maintaining accuracy, with a speedup of 4.5 times compared to the original model. Sparse Rate Reduction (SRR) is an effective method for compressing large transformer models with minimal loss of performance on downstream tasks, applicable to other deep learning architectures like CNNs and RNNs."
+};
+
+// Get the select field and text area elements
+var model_select_c = document.getElementById('model_select_c');
+var summary_text_c = document.getElementById('summary_text_c');
+
+// Define a function that updates the summary text based on the selected model
+function update_summary_text_c() {
+    var model_name_c = model_select_c.value;
+    summary_text_c.value = model_summaries_c[model_name_c];
+}
+
+// Attach the function to the select field
+model_select_c.addEventListener('change', update_summary_text_c);
+
+// Call the function once to initialize the text area
+update_summary_text_c();
+</script>
+<section id="analysis-2" class="level4">
+<h4 class="anchored" data-anchor-id="analysis-2"><em>Analysis</em></h4>
+<p>For the third paper, we again observe that <strong>Mistral Instruct</strong> fails to emit the termination token and produces a senseless stream of text. Both <strong>OpenHermes-2.5-neural-chat</strong> and <strong>una-cyberton</strong> do a decent job, although the latter model earns additional points for including numerical metrics, a requested, and for producing a summary that better captures the bigger picture and is more enjoyable to read.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mistral-7B-Instruct-v0.2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>OpenHermes-2.5-neural-chat-7B-v3-1-7B</td>
+<td>0.7</td>
+</tr>
+<tr class="odd">
+<td>una-cybertron-7B-v2</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding Remarks</h2>
+<p>Looking at aggregate results it does seem like there is something noteworthy about the <strong>una-cybertron</strong> model. It appears to be at least on par with the state-of-the-art <strong>OpenHermes-2.5-neural-chat-7B-v3-1-7B</strong>, and possibly even follows instructions slightly better.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mistral-7B-Instruct-v0.2</td>
+<td>0.27</td>
+</tr>
+<tr class="even">
+<td>OpenHermes-2.5-neural-chat-7B-v3-1-7B</td>
+<td>0.76</td>
+</tr>
+<tr class="odd">
+<td>una-cybertron-7B-v2</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Linear Content</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://github.com/">GitHub</a> · <a href="https://twitter.com">Twitter</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
