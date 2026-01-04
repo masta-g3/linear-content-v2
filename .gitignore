@@ -5,3 +5,4 @@ _site/
 Screenshot*.png
 
 /.quarto/
+.playwright-mcp/
