@@ -6,24 +6,28 @@ project:
 website:
   title: "linear content"
   description: "thoughts on language, numeric computations, and other things."
+  site-url: https://blog.mg3.dev
+  open-graph: true
+  twitter-card: true
+  image: /images/site-preview.png
   navbar:
     background: light
     right:
       - text: "About"
         href: about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/masta-g3
         aria-label: GitHub
-      - icon: twitter
-        href: https://twitter.com
-        aria-label: Twitter
+      - icon: twitter-x
+        href: https://x.com/masta_g3
+        aria-label: X
   page-footer:
     left: |
       Linear Content
     center: |
       Built with [Quarto](https://quarto.org/)
     right: |
-      [GitHub](https://github.com/) · [Twitter](https://twitter.com)
+      [GitHub](https://github.com/masta-g3) · [X](https://x.com/masta_g3)
 
 format:
   html:
