@@ -1,7 +1,9 @@
 // Paper Selection Experiment Visualization
 
-const DATA_PATH = window.VIZ_DATA_PATH || './viz/viz_data.json';
+const MODELS_PATH = window.VIZ_MODELS_PATH || './viz/models.json';
+const DATA_BASE_PATH = window.VIZ_DATA_BASE || './viz/';
 
+let modelsIndex = null;
 let data = null;
 let expandedPaper = null;
 
@@ -29,42 +31,49 @@ function showTooltip(event, paper) {
 
 function positionTooltip(event) {
   tooltip
-    .style('left', (event.pageX + 12) + 'px')
-    .style('top', (event.pageY - 12) + 'px');
+    .style('left', (event.clientX + 12) + 'px')
+    .style('top', (event.clientY - 12) + 'px');
 }
 
 function hideTooltip() {
   tooltip.classed('visible', false);
 }
 
-// Render headline stats
+// Render dynamic conclusion based on data
+function renderConclusion(summary, topX) {
+  const overlap = summary.single_in_consensus;
+  const total = summary.papers_per_run;
+  const similarity = Math.round(summary.avg_run_similarity * 100);
+  const topPct = topX[0]?.percentage || 0;
+  const unique = summary.unique_papers_selected;
+
+  let text;
+  if (unique <= 10 && similarity >= 50) {
+    // High: best
+    text = `Single-shot is enough. The model locks onto ${unique} papers with ${Math.round(topPct)}% top agreement—and the picks match the criteria (surprising findings, not benchmark increments).`;
+  } else if (overlap >= 2 && similarity >= 45) {
+    // Medium: good
+    text = `Single-shot mostly works. Slightly more exploration (${unique} papers), similar top picks to higher effort. ${overlap}/${total} single-shot picks land in consensus.`;
+  } else if (overlap >= 1 && similarity >= 20) {
+    // Low: partial
+    text = `Single-shot is unreliable. The model wanders across ${unique} papers with only ${similarity}% consistency—some strong picks buried in noise. Multi-run voting helps surface them.`;
+  } else {
+    // Minimal: noise
+    text = `Don't trust this. ${unique} scattered papers, ${similarity}% consistency, and single-shot picks are essentially random (${overlap}/${total} consensus overlap). Even multi-run struggles to find signal.`;
+  }
+
+  d3.select('#sel-conclusion .conclusion').text(text);
+}
+
+// Render headline stats as sparkline only
 function renderHeadlineStats(summary, runSimilarities) {
   const container = d3.select('#sel-stats');
+  container.html('');
 
-  // Stats row
-  const statsRow = container.append('div').attr('class', 'stats-row');
-
-  const stats = [
-    { value: summary.total_runs, label: 'runs' },
-    { value: summary.unique_papers_selected, label: 'unique' },
-    { value: summary.consensus_count, label: 'consensus' },
-    { value: `${summary.single_in_consensus}/${summary.papers_per_run}`, label: 'overlap' },
-  ];
-
-  stats.forEach((s, i) => {
-    if (i > 0) {
-      statsRow.append('span').attr('class', 'stat-separator').text('·');
-    }
-    const stat = statsRow.append('div').attr('class', 'stat');
-    stat.append('span').attr('class', 'stat-value').text(s.value);
-    stat.append('span').attr('class', 'stat-label').text(s.label);
-  });
-
-  // Similarity row with sparkline
   const simRow = container.append('div').attr('class', 'similarity-row');
   simRow.append('span')
     .attr('class', 'similarity-label')
-    .text(`Run similarity: ${Math.round(summary.avg_run_similarity * 100)}%`);
+    .text(`Run-to-run consistency: ${Math.round(summary.avg_run_similarity * 100)}%`);
 
   const sparkline = simRow.append('div').attr('class', 'sparkline');
   const maxJaccard = d3.max(runSimilarities, d => d.jaccard) || 1;
@@ -82,9 +91,10 @@ function renderPaperRow(container, paper, options = {}) {
 
   const pct = paper.percentage ?? paper.multi_run_percentage ?? 0;
   const title = paper.title.length > 50 ? paper.title.slice(0, 50) + '...' : paper.title;
+  const belowThreshold = paper.above_threshold === false;
 
   const row = container.append('div')
-    .attr('class', 'paper-row')
+    .attr('class', 'paper-row' + (belowThreshold ? ' below-threshold' : ''))
     .attr('data-arxiv', paper.arxiv_code)
     .on('mouseenter', (event) => showTooltip(event, paper))
     .on('mousemove', positionTooltip)
@@ -168,31 +178,36 @@ function toggleDetail(container, paper, options) {
 }
 
 // Render comparison section
-function renderComparison(singleShot, consensus) {
+function renderComparison(singleShot, topX, papersPerRun) {
   const singleShotCodes = new Set(singleShot.map(p => p.arxiv_code));
-  const consensusCodes = new Set(consensus.map(p => p.arxiv_code));
+  const topXCodes = new Set(topX.map(p => p.arxiv_code));
 
   // Single-shot column
   const singleColumn = d3.select('#sel-single-column');
   singleColumn.select('.count').text(`(${singleShot.length})`);
   const singleList = singleColumn.select('.paper-list');
+  singleList.html('');
   singleShot.forEach(paper => {
-    renderPaperRow(singleList, paper, { showOverlap: true, singleShotCodes, consensusCodes });
+    renderPaperRow(singleList, paper, { showOverlap: true, singleShotCodes, consensusCodes: topXCodes });
   });
 
-  // Consensus column
-  const consensusColumn = d3.select('#sel-consensus-column');
-  consensusColumn.select('.count').text(`(${consensus.length})`);
-  const consensusList = consensusColumn.select('.paper-list');
-  consensus.forEach(paper => {
-    renderPaperRow(consensusList, paper, { showOverlap: true, singleShotCodes, consensusCodes });
+  // Top X column
+  const topXColumn = d3.select('#sel-consensus-column');
+  topXColumn.select('h3').html(`Top ${papersPerRun} by frequency <span class="threshold"></span>`);
+  const aboveCount = topX.filter(p => p.above_threshold).length;
+  topXColumn.select('.threshold').text(`(${aboveCount} above 50%)`);
+  topXColumn.select('.count').text(`(${topX.length})`);
+  const topXList = topXColumn.select('.paper-list');
+  topXList.html('');
+  topX.forEach(paper => {
+    renderPaperRow(topXList, paper, { showOverlap: true, singleShotCodes, consensusCodes: topXCodes });
   });
 }
 
 // Render frequency list
 function renderFrequencyList(papers, sortBy = 'frequency') {
   const singleShotCodes = new Set(data.single_shot.map(p => p.arxiv_code));
-  const consensusCodes = new Set(data.consensus.map(p => p.arxiv_code));
+  const topXCodes = new Set(data.top_x.map(p => p.arxiv_code));
 
   const sorted = [...papers].sort((a, b) => {
     if (sortBy === 'frequency') return b.frequency - a.frequency;
@@ -206,8 +221,44 @@ function renderFrequencyList(papers, sortBy = 'frequency') {
   list.html('');
 
   sorted.forEach(paper => {
-    renderPaperRow(list, paper, { showMarkers: true, singleShotCodes, consensusCodes });
+    renderPaperRow(list, paper, { showMarkers: true, singleShotCodes, consensusCodes: topXCodes });
   });
+}
+
+// Populate model dropdown from index
+function populateModelDropdown() {
+  const select = d3.select('#sel-model');
+  select.html('');
+
+  const effortOrder = ['minimal', 'low', 'medium', 'high'];
+  const sorted = [...modelsIndex.models].sort((a, b) => {
+    const aIdx = effortOrder.findIndex(e => a.id.endsWith(e));
+    const bIdx = effortOrder.findIndex(e => b.id.endsWith(e));
+    return aIdx - bIdx;
+  });
+
+  sorted.forEach(model => {
+    select.append('option')
+      .attr('value', model.id)
+      .text(model.name);
+  });
+
+  select.property('value', modelsIndex.default);
+}
+
+// Load model data and render
+async function loadModelData(modelId) {
+  const model = modelsIndex.models.find(m => m.id === modelId);
+  if (!model) return;
+
+  const dataPath = DATA_BASE_PATH + model.file;
+  data = await d3.json(dataPath);
+
+  renderConclusion(data.summary, data.top_x);
+  renderHeadlineStats(data.summary, data.run_similarities);
+  renderComparison(data.single_shot, data.top_x, data.summary.papers_per_run);
+  renderFrequencyList(data.frequency_distribution);
+  d3.select('#legend-top-x').text(data.summary.papers_per_run);
 }
 
 // Setup event handlers
@@ -225,22 +276,43 @@ function setupHandlers() {
   d3.select('#sel-sort').on('change', function() {
     renderFrequencyList(data.frequency_distribution, this.value);
   });
+
+  // Model select
+  d3.select('#sel-model').on('change', function() {
+    loadModelData(this.value);
+  });
 }
 
 // Load and render
 async function init() {
   try {
-    data = await d3.json(DATA_PATH);
+    modelsIndex = await d3.json(MODELS_PATH);
   } catch (e) {
-    console.error('Failed to load data:', e);
-    d3.select('.viz-main').html(`<p>Error loading data. Make sure viz_data.json exists at ${DATA_PATH}</p>`);
+    d3.select('.viz-main').html(`<p>Error loading models index at ${MODELS_PATH}</p>`);
     return;
   }
 
-  renderHeadlineStats(data.summary, data.run_similarities);
-  renderComparison(data.single_shot, data.consensus);
-  renderFrequencyList(data.frequency_distribution);
+  populateModelDropdown();
   setupHandlers();
+  await loadModelData(modelsIndex.default);
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+// Fix Quarto's page-columns grid override
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.comparison-container, .comparison-container > .column').forEach(el => {
+      el.classList.remove('page-columns', 'page-full');
+    });
+    const container = document.querySelector('.comparison-container');
+    if (container) {
+      container.style.display = 'grid';
+      container.style.gridTemplateColumns = '1fr 1fr';
+      container.style.gap = '48px';
+    }
+    document.querySelectorAll('.comparison-container > .column').forEach(el => {
+      el.style.width = '100%';
+    });
+  }, 0);
+});
