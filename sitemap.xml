@@ -6,42 +6,38 @@
   </url>
   <url>
     <loc>https://blog.mg3.dev/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.221Z</lastmod>
+    <lastmod>2026-01-06T04:33:26.675Z</lastmod>
   </url>
   <url>
     <loc>https://blog.mg3.dev/docs/history/20251222_dark_mode_wiring.html</loc>
-    <lastmod>2025-12-22T09:10:15.221Z</lastmod>
+    <lastmod>2026-01-04T01:21:32.985Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.mg3.dev/docs/plans/social-sharing.html</loc>
+    <lastmod>2026-01-06T04:56:35.372Z</lastmod>
   </url>
   <url>
     <loc>https://blog.mg3.dev/docs/STRUCTURE.html</loc>
-    <lastmod>2025-12-22T09:10:36.015Z</lastmod>
+    <lastmod>2026-01-04T02:29:53.303Z</lastmod>
   </url>
   <url>
     <loc>https://blog.mg3.dev/posts/20231230_no-quantization-for-small-model/index.html</loc>
     <lastmod>2025-12-22T08:10:33.237Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20161012_pca-classifier/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.231Z</lastmod>
+    <loc>https://blog.mg3.dev/posts/20260103_llm-resampling/index.html</loc>
+    <lastmod>2026-01-06T02:11:27.225Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20230517_longevity-rules/index.html</loc>
+    <loc>https://blog.mg3.dev/posts/20230910_llm-quantization-guide/index.html</loc>
     <lastmod>2025-12-22T08:10:33.236Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20160825_sentiment-bukowski/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.222Z</lastmod>
+    <loc>https://blog.mg3.dev/posts/20240322_eval-document-placement/index.html</loc>
+    <lastmod>2025-12-22T08:10:33.237Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20230517_attachment/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.236Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.mg3.dev/posts/20160924_fml-or-jmmd/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.223Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.mg3.dev/posts/20240109_recursive-summarization-by-parts/index.html</loc>
+    <loc>https://blog.mg3.dev/posts/20231216_una-cybertron-7b-v2-analysis/index.html</loc>
     <lastmod>2025-12-22T08:10:33.237Z</lastmod>
   </url>
   <url>
@@ -49,16 +45,28 @@
     <lastmod>2025-12-22T08:10:33.232Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20231216_una-cybertron-7b-v2-analysis/index.html</loc>
+    <loc>https://blog.mg3.dev/posts/20240109_recursive-summarization-by-parts/index.html</loc>
     <lastmod>2025-12-22T08:10:33.237Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20240322_eval-document-placement/index.html</loc>
-    <lastmod>2025-12-22T08:10:33.237Z</lastmod>
+    <loc>https://blog.mg3.dev/posts/20160924_fml-or-jmmd/index.html</loc>
+    <lastmod>2025-12-22T08:10:33.223Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.mg3.dev/posts/20230910_llm-quantization-guide/index.html</loc>
+    <loc>https://blog.mg3.dev/posts/20230517_attachment/index.html</loc>
     <lastmod>2025-12-22T08:10:33.236Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.mg3.dev/posts/20160825_sentiment-bukowski/index.html</loc>
+    <lastmod>2025-12-22T08:10:33.222Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.mg3.dev/posts/20230517_longevity-rules/index.html</loc>
+    <lastmod>2025-12-22T08:10:33.236Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.mg3.dev/posts/20161012_pca-classifier/index.html</loc>
+    <lastmod>2025-12-22T08:10:33.231Z</lastmod>
   </url>
   <url>
     <loc>https://blog.mg3.dev/posts/20210914_cholesky-decomposition/index.html</loc>
@@ -70,7 +78,11 @@
   </url>
   <url>
     <loc>https://blog.mg3.dev/docs/VISUAL_IDENTITY.html</loc>
-    <lastmod>2025-12-22T08:10:33.206Z</lastmod>
+    <lastmod>2026-01-04T01:21:33.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.mg3.dev/docs/plans/interactive-studies-integration.html</loc>
+    <lastmod>2026-01-04T02:17:18.388Z</lastmod>
   </url>
   <url>
     <loc>https://blog.mg3.dev/docs/history/20251222_dark_mode.html</loc>

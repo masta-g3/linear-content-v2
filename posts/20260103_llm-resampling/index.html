@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-01-03">
+<meta name="description" content="Comparing single-shot LLM paper selection against multi-run consensus voting.">
 
-<title>linear content</title>
+<title>Think Harder, Sample Once – linear content</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,27 +25,25 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet" class="quarto-color-scheme-extra">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-ff64a9364a049a33884aa59445b7558c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet" class="quarto-color-scheme-extra">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-ff64a9364a049a33884aa59445b7558c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,67 +71,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -302,7 +244,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">linear content</span>
     </a>
   </div>
@@ -313,7 +255,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -337,16 +279,29 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">linear content</h1>
-            <p class="subtitle lead">thoughts on language, markets, numeric computations, among other things.</p>
-                      </div>
+    <div class="quarto-title column-page">
+      <h1 class="title">Think Harder, Sample Once</h1>
+                  <div>
+        <div class="description">
+          Comparing single-shot LLM paper selection against multi-run consensus voting.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta column-page">
 
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 3, 2025</p>
+      </div>
+    </div>
     
       
     </div>
@@ -355,334 +310,96 @@ window.Quarto = {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(14)</span></div><div class="category" data-category="ZGF0YSUyMHNjaWVuY2U=">data science <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bmxw">nlp <span class="quarto-category-count">(10)</span></div><div class="category" data-category="cmFuZG9t">random <span class="quarto-category-count">(2)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full column-page" id="quarto-document-content">
 
 
 
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bmxw" data-listing-date-sort="1735891200000" data-listing-file-modified-sort="1767665487225" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="14">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20260103_llm-resampling/index.html" class="no-external">Think Harder, Sample Once</a>
+<div class="viz-container page-columns page-full">
+<main class="viz-main page-columns page-full">
+<header class="viz-header">
+<p class="intro">
+I want to find the most interesting papers from ~200 recent AI publications. “Interesting” sounds subjective, but I gave the model specific criteria: prioritize counter-intuitive findings and emergent behaviors, downweight incremental benchmarks, and so on. The question: can I trust a single response, or do I need to ask 30 times and vote?
+</p>
+<br>
+<p class="intro">
+Below, I compare <strong>single-shot</strong> (one call, take what you get) against <strong>consensus</strong> (30 runs, keep papers that appear in &gt;50%). The answer depends on how hard the model thinks.
+</p>
+</header>
+<section id="sel-conclusion">
+<div class="model-selector">
+<p><span class="model-label">Results for</span> <select id="sel-model"></select>:</p>
+</div>
+<p class="conclusion">
+</p>
+</section>
+<section id="sel-stats">
+</section>
+<section id="sel-comparison" class="page-columns page-full">
+<div class="comparison-container page-columns page-full">
+<div id="sel-single-column" class="column page-columns page-full">
+<h3 class="anchored">
+Single-shot <span class="count"></span>
 </h3>
-<div class="listing-categories">
+<div class="column-subtitle">
+Papers from one sampled run
+</div>
+<div class="paper-list">
 
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20260103_llm-resampling/index.html" class="no-external">
-<p>Comparing single-shot LLM paper selection against multi-run consensus voting.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20260103_llm-resampling/index.html" class="no-external">
-<div class="listing-date">
-Jan 3, 2025
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="bmxw" data-listing-date-sort="1711090800000" data-listing-file-modified-sort="1766391033237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="487">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20240322_eval-document-placement/index.html" class="no-external">Placement Matters in Model Evaluation: Comparing Summaries</a>
+<div id="sel-consensus-column" class="column page-columns page-full">
+<h3 class="anchored">
+Top 5 by frequency <span class="threshold"></span>
 </h3>
-<div class="listing-categories">
+<div class="column-subtitle">
+Muted = below 50% threshold
+</div>
+<div class="paper-list">
 
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20240322_eval-document-placement/index.html" class="no-external">
-<p>When evaluating LLMs, the order you present data matters more than you’d think. I found that models consistently favor the second option when comparing summaries—unless you make them think first.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20240322_eval-document-placement/index.html" class="no-external">
-<div class="listing-date">
-Mar 22, 2024
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="bmxw" data-listing-date-sort="1704787200000" data-listing-file-modified-sort="1766391033237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1657">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20240109_recursive-summarization-by-parts/index.html" class="no-external">Recursive Summarization by Parts</a>
+</div>
+</section>
+<section id="sel-frequency">
+<h3 class="collapsible anchored">
+<span class="toggle-icon">▼</span> All Selections <span class="count"></span> <span class="bar-label">% of 30 runs</span> <select id="sel-sort"> <option value="frequency">Sort by frequency</option> <option value="title">Sort by title</option> </select>
 </h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
+<div class="marker-legend">
+<p><span><span class="marker-consensus">*</span> in top <span id="legend-top-x">X</span></span> <span><span class="marker-single">·</span> in single-shot</span></p>
 </div>
-<div class="delink listing-description"><a href="./posts/20240109_recursive-summarization-by-parts/index.html" class="no-external">
-<p>Long documents don’t fit in context windows. Here’s a practical chunking approach that iteratively distills text into concise notes, preserving what matters.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20240109_recursive-summarization-by-parts/index.html" class="no-external">
-<div class="listing-date">
-Jan 9, 2024
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="bmxw" data-listing-date-sort="1703923200000" data-listing-file-modified-sort="1766391033237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2825">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20231230_no-quantization-for-small-model/index.html" class="no-external">No Quantization for Small Model</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
+<div id="sel-freq-list" class="paper-list">
 
 </div>
-<div class="delink listing-description"><a href="./posts/20231230_no-quantization-for-small-model/index.html" class="no-external">
-<p>Quantization saves memory, but does it hurt quality on smaller 7B models? I ran the same summarization task across Q3, Q4, Q5 and Q8 variants. The differences were smaller than expected.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20231230_no-quantization-for-small-model/index.html" class="no-external">
-<div class="listing-date">
-Dec 30, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="bmxw" data-listing-date-sort="1702713600000" data-listing-file-modified-sort="1766391033237" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="24" data-listing-word-count-sort="4612">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20231216_una-cybertron-7b-v2-analysis/index.html" class="no-external">A Closer Look at una-cybertron-7B-v2 for Summarization</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
+</section>
+<footer class="viz-footer">
+<p class="insight">
+Why does reasoning effort matter so much? <a href="https://llmpedia.ai/papers/2511.02309">Recent work</a> suggests that extended “thinking” performs internal sequential refinement—each reasoning step correcting the previous. Parallel voting approximates this externally, but at 30× the cost.
+</p>
+<p class="takeaway">
+<strong>Takeaway:</strong> I’ll go with high reasoning + single-shot. More reliable <em>and</em> cheaper than running lower effort 30 times.
+</p>
+</footer>
+</main>
+<div id="sel-tooltip" class="viz-tooltip">
 
 </div>
-<div class="delink listing-description"><a href="./posts/20231216_una-cybertron-7b-v2-analysis/index.html" class="no-external">
-<p>There’s drama on HuggingFace about data contamination in top-ranked models. I’ve been using una-cybertron-7B-v2 for summarization—time to take a closer look at what’s actually going on.</p>
-</a></div>
 </div>
-<div class="metadata">
-<a href="./posts/20231216_una-cybertron-7b-v2-analysis/index.html" class="no-external">
-<div class="listing-date">
-Dec 16, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="bmxw" data-listing-date-sort="1694329200000" data-listing-file-modified-sort="1766391033236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="964">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20230910_llm-quantization-guide/index.html" class="no-external">LLM Technical Note: Picking the Right Quantization Method for Local Inference</a>
-</h3>
-<div class="listing-categories">
+<link rel="stylesheet" href="viz/style.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+window.VIZ_MODELS_PATH = './viz/models.json';
+window.VIZ_DATA_BASE = './viz/';
+</script>
+<script src="viz/main.js" defer=""></script>
 
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
 
-</div>
-<div class="delink listing-description"><a href="./posts/20230910_llm-quantization-guide/index.html" class="no-external">
-<p>Q4_K_M, Q5_K, Q8_0—what do these cryptic codes mean? A quick reference for picking the right quantization method when running LLMs locally.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20230910_llm-quantization-guide/index.html" class="no-external">
-<div class="listing-date">
-Sep 10, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="bmxw" data-listing-date-sort="1687071600000" data-listing-file-modified-sort="1766391033236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="677">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20230618_gpt-news-sentiment/index.html" class="no-external">Financial News Sentiment Classification with GPT Models</a>
-</h3>
-<div class="listing-categories">
 
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20230618_gpt-news-sentiment/index.html" class="no-external">
-<p>Does GPT-4 justify its cost for domain-specific tasks? I test both GPT-3.5 and GPT-4 on financial news sentiment classification to find out.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20230618_gpt-news-sentiment/index.html" class="no-external">
-<div class="listing-date">
-Jun 18, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="cmFuZG9t" data-listing-date-sort="1684306800000" data-listing-file-modified-sort="1766391033236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="426">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20230517_attachment/index.html" class="no-external">On Addiction and Attachment</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('cmFuZG9t'); return false;">random</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20230517_attachment/index.html" class="no-external">
-<p>We talk about addiction in terms of substances, but the real dependencies run deeper. Some thoughts on the attachments we rarely examine.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20230517_attachment/index.html" class="no-external">
-<div class="listing-date">
-May 17, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="cmFuZG9t" data-listing-date-sort="1684306800000" data-listing-file-modified-sort="1766391033236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="296">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20230517_longevity-rules/index.html" class="no-external">The Pursuit of Longevity: Evidence-Based Strategies for a Longer Life</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('cmFuZG9t'); return false;">random</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20230517_longevity-rules/index.html" class="no-external">
-<p>A distillation of evidence-based longevity practices: exercise, sleep, diet, supplements. No magic bullets—just what the research actually supports.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20230517_longevity-rules/index.html" class="no-external">
-<div class="listing-date">
-May 17, 2023
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="9" data-categories="ZGF0YSUyMHNjaWVuY2U=" data-listing-date-sort="1631602800000" data-listing-file-modified-sort="1766391033236" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20210914_cholesky-decomposition/index.html" class="no-external">Data Science Concept: Cholesky Decomposition</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHNjaWVuY2U='); return false;">data science</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20210914_cholesky-decomposition/index.html" class="no-external">
-<p>Cholesky decomposition breaks a matrix into triangular parts. Useful for solving linear systems, simulating correlated variables, and speeding up optimization.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20210914_cholesky-decomposition/index.html" class="no-external">
-<div class="listing-date">
-Sep 14, 2021
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="10" data-categories="bmxw" data-listing-date-sort="1480320000000" data-listing-file-modified-sort="1766391033232" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1068">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20161128_word-embeddings/index.html" class="no-external">Building a Word Embeddings Model</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20161128_word-embeddings/index.html" class="no-external">
-<p>Word embeddings turn text into vectors that encode meaning. I walk through building one from scratch using TensorFlow and the Gutenberg Encyclopedia.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20161128_word-embeddings/index.html" class="no-external">
-<div class="listing-date">
-Nov 28, 2016
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="11" data-categories="ZGF0YSUyMHNjaWVuY2U=" data-listing-date-sort="1476255600000" data-listing-file-modified-sort="1766391033231" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="668">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20161012_pca-classifier/index.html" class="no-external">A PCA Classifier for Landscapes</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGF0YSUyMHNjaWVuY2U='); return false;">data science</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20161012_pca-classifier/index.html" class="no-external">
-<p>Neural networks are powerful but expensive. For simpler image tasks, PCA can get you surprisingly far. Here I classify landscapes vs impressionist paintings with just eigenvectors.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20161012_pca-classifier/index.html" class="no-external">
-<div class="listing-date">
-Oct 12, 2016
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="12" data-categories="bmxw" data-listing-date-sort="1474700400000" data-listing-file-modified-sort="1766391033223" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="391">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20160924_fml-or-jmmd/index.html" class="no-external">FML or Just Made my Day?</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20160924_fml-or-jmmd/index.html" class="no-external">
-<p>FML posts are depressing; JustMadeMyDay posts are uplifting. I build a Naive Bayes classifier to tell them apart—and see which words carry the most weight.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20160924_fml-or-jmmd/index.html" class="no-external">
-<div class="listing-date">
-Sep 24, 2016
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="13" data-categories="bmxw" data-listing-date-sort="1472108400000" data-listing-file-modified-sort="1766391033222" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="782">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/20160825_sentiment-bukowski/index.html" class="no-external">Bukowski’s Poems Sentiment Analysis</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmxw'); return false;">nlp</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/20160825_sentiment-bukowski/index.html" class="no-external">
-<p>I had 1,363 Bukowski poems lying around from a neural network project. Might as well run sentiment analysis and see what themes emerge from all that beautiful misery.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/20160825_sentiment-bukowski/index.html" class="no-external">
-<div class="listing-date">
-Aug 25, 2016
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right

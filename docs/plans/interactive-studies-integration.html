@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>interactive-studies-integration – linear content</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet" class="quarto-color-scheme-extra">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-ff64a9364a049a33884aa59445b7558c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-5333ce1b2ba635552429d1482dc30447.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">linear content</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img" aria-label="Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#interactive-studies-integration" id="toc-interactive-studies-integration" class="nav-link active" data-scroll-target="#interactive-studies-integration">Interactive Studies Integration</a>
+  <ul class="collapse">
+  <li><a href="#strategy" id="toc-strategy" class="nav-link" data-scroll-target="#strategy">Strategy</a></li>
+  <li><a href="#analysis-summary" id="toc-analysis-summary" class="nav-link" data-scroll-target="#analysis-summary">Analysis Summary</a>
+  <ul class="collapse">
+  <li><a href="#current-state" id="toc-current-state" class="nav-link" data-scroll-target="#current-state">Current State</a></li>
+  <li><a href="#gap-analysis" id="toc-gap-analysis" class="nav-link" data-scroll-target="#gap-analysis">Gap Analysis</a></li>
+  <li><a href="#detailed-violations-in-current-viz" id="toc-detailed-violations-in-current-viz" class="nav-link" data-scroll-target="#detailed-violations-in-current-viz">Detailed Violations in Current Viz</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#supra-phase-a-update-visual_guide.md" id="toc-supra-phase-a-update-visual_guide.md" class="nav-link" data-scroll-target="#supra-phase-a-update-visual_guide.md">SUPRA-PHASE A: Update VISUAL_GUIDE.md</a>
+  <ul class="collapse">
+  <li><a href="#a1-proposed-visual_guide.md-rewrite" id="toc-a1-proposed-visual_guide.md-rewrite" class="nav-link" data-scroll-target="#a1-proposed-visual_guide.md-rewrite">A1: Proposed VISUAL_GUIDE.md Rewrite</a></li>
+  <li><a href="#design-tokens" id="toc-design-tokens" class="nav-link" data-scroll-target="#design-tokens">Design Tokens</a></li>
+  <li><a href="#output-structure" id="toc-output-structure" class="nav-link" data-scroll-target="#output-structure">Output Structure</a>
+  <ul class="collapse">
+  <li><a href="#html-fragment-not-full-document" id="toc-html-fragment-not-full-document" class="nav-link" data-scroll-target="#html-fragment-not-full-document">HTML Fragment (Not Full Document)</a></li>
+  <li><a href="#css-structure" id="toc-css-structure" class="nav-link" data-scroll-target="#css-structure">CSS Structure</a></li>
+  <li><a href="#javascript-structure" id="toc-javascript-structure" class="nav-link" data-scroll-target="#javascript-structure">JavaScript Structure</a></li>
+  </ul></li>
+  <li><a href="#component-patterns" id="toc-component-patterns" class="nav-link" data-scroll-target="#component-patterns">Component Patterns</a>
+  <ul class="collapse">
+  <li><a href="#bars" id="toc-bars" class="nav-link" data-scroll-target="#bars">Bars</a></li>
+  <li><a href="#sparklines" id="toc-sparklines" class="nav-link" data-scroll-target="#sparklines">Sparklines</a></li>
+  <li><a href="#tooltips" id="toc-tooltips" class="nav-link" data-scroll-target="#tooltips">Tooltips</a></li>
+  <li><a href="#expandable-details" id="toc-expandable-details" class="nav-link" data-scroll-target="#expandable-details">Expandable Details</a></li>
+  <li><a href="#interactive-rows" id="toc-interactive-rows" class="nav-link" data-scroll-target="#interactive-rows">Interactive Rows</a></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
+  <li><a href="#form-controls" id="toc-form-controls" class="nav-link" data-scroll-target="#form-controls">Form Controls</a></li>
+  </ul></li>
+  <li><a href="#data-emphasis-without-color" id="toc-data-emphasis-without-color" class="nav-link" data-scroll-target="#data-emphasis-without-color">Data Emphasis Without Color</a></li>
+  <li><a href="#d3.js-patterns" id="toc-d3.js-patterns" class="nav-link" data-scroll-target="#d3.js-patterns">D3.js Patterns</a>
+  <ul class="collapse">
+  <li><a href="#standard-setup" id="toc-standard-setup" class="nav-link" data-scroll-target="#standard-setup">Standard Setup</a></li>
+  <li><a href="#tooltip-pattern" id="toc-tooltip-pattern" class="nav-link" data-scroll-target="#tooltip-pattern">Tooltip Pattern</a></li>
+  <li><a href="#transitions" id="toc-transitions" class="nav-link" data-scroll-target="#transitions">Transitions</a></li>
+  </ul></li>
+  <li><a href="#checklist" id="toc-checklist" class="nav-link" data-scroll-target="#checklist">Checklist</a></li>
+  <li><a href="#file-output-structure" id="toc-file-output-structure" class="nav-link" data-scroll-target="#file-output-structure">File Output Structure</a></li>
+  <li><a href="#b3-integration-css-optional" id="toc-b3-integration-css-optional" class="nav-link" data-scroll-target="#b3-integration-css-optional">B3: Integration CSS (Optional)</a></li>
+  <li><a href="#b4-implementation-phases-for-integration" id="toc-b4-implementation-phases-for-integration" class="nav-link" data-scroll-target="#b4-implementation-phases-for-integration">B4: Implementation Phases for Integration</a>
+  <ul class="collapse">
+  <li><a href="#phase-b.1-create-first-study-post" id="toc-phase-b.1-create-first-study-post" class="nav-link" data-scroll-target="#phase-b.1-create-first-study-post">Phase B.1: Create First Study Post</a></li>
+  <li><a href="#phase-b.2-verify-visual-alignment" id="toc-phase-b.2-verify-visual-alignment" class="nav-link" data-scroll-target="#phase-b.2-verify-visual-alignment">Phase B.2: Verify Visual Alignment</a></li>
+  <li><a href="#phase-b.3-test-interactions" id="toc-phase-b.3-test-interactions" class="nav-link" data-scroll-target="#phase-b.3-test-interactions">Phase B.3: Test Interactions</a></li>
+  <li><a href="#phase-b.4-dark-mode" id="toc-phase-b.4-dark-mode" class="nav-link" data-scroll-target="#phase-b.4-dark-mode">Phase B.4: Dark Mode</a></li>
+  <li><a href="#phase-b.5-mobile" id="toc-phase-b.5-mobile" class="nav-link" data-scroll-target="#phase-b.5-mobile">Phase B.5: Mobile</a></li>
+  <li><a href="#phase-b.6-document" id="toc-phase-b.6-document" class="nav-link" data-scroll-target="#phase-b.6-document">Phase B.6: Document</a></li>
+  </ul></li>
+  <li><a href="#file-changes-summary" id="toc-file-changes-summary" class="nav-link" data-scroll-target="#file-changes-summary">File Changes Summary</a>
+  <ul class="collapse">
+  <li><a href="#supra-phase-a-upstream" id="toc-supra-phase-a-upstream" class="nav-link" data-scroll-target="#supra-phase-a-upstream">Supra-Phase A (Upstream)</a></li>
+  <li><a href="#supra-phase-b-integration" id="toc-supra-phase-b-integration" class="nav-link" data-scroll-target="#supra-phase-b-integration">Supra-Phase B (Integration)</a></li>
+  </ul></li>
+  <li><a href="#backward-compatibility" id="toc-backward-compatibility" class="nav-link" data-scroll-target="#backward-compatibility">Backward Compatibility</a></li>
+  <li><a href="#risks-mitigations" id="toc-risks-mitigations" class="nav-link" data-scroll-target="#risks-mitigations">Risks &amp; Mitigations</a></li>
+  <li><a href="#decision-log" id="toc-decision-log" class="nav-link" data-scroll-target="#decision-log">Decision Log</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+
+<section id="interactive-studies-integration" class="level1">
+<h1>Interactive Studies Integration</h1>
+<p>Align the study generation system’s output with blog requirements, then integrate as Quarto posts.</p>
+<hr>
+<section id="strategy" class="level2">
+<h2 class="anchored" data-anchor-id="strategy">Strategy</h2>
+<p><strong>Two-phase approach:</strong></p>
+<ol type="1">
+<li><p><strong>Supra-Phase A</strong>: Update <code>new_studies_format/VISUAL_GUIDE.md</code> — the upstream standard that governs how studies are generated. Make the output inherently compatible with the blog.</p></li>
+<li><p><strong>Supra-Phase B</strong>: Integrate studies as Quarto posts — minimal transformation needed since output is already blog-aligned.</p></li>
+</ol>
+<p>This ensures future studies are born compatible, not retrofitted.</p>
+<hr>
+</section>
+<section id="analysis-summary" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-summary">Analysis Summary</h2>
+<section id="current-state" class="level3">
+<h3 class="anchored" data-anchor-id="current-state">Current State</h3>
+<p><strong>Study System Output</strong> (<code>new_studies_format/viz/</code>): - Standalone HTML + CSS + JS (D3.js v7) - IBM Plex Mono typography - Blue accent color (#2563eb) for data emphasis - White background (#ffffff) - Rounded corners (2-4px) on bars, tooltips, sparklines, selects - Shadows on tooltips - Global CSS reset (<code>* { margin: 0 }</code>) - <code>:root</code> variable definitions</p>
+<p><strong>Blog Visual Identity</strong> (<code>docs/VISUAL_IDENTITY.md</code>): - Berkeley Mono typography - Strictly monochrome (no color accents) - Warm paper background (#FAFAF9 light, #1E1D1B dark) - Dot grid background pattern - Zero ornamentation: no shadows, no rounded corners - Dark mode via system preference - CSS variables defined in <code>styles.css</code></p>
+</section>
+<section id="gap-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="gap-analysis">Gap Analysis</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 29%">
+<col style="width: 31%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th>Current Studies</th>
+<th>Blog Requirement</th>
+<th>Change Needed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Font</td>
+<td>IBM Plex Mono</td>
+<td>Berkeley Mono</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="even">
+<td>Colors</td>
+<td>Blue accent #2563eb</td>
+<td>Monochrome only</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="odd">
+<td>Background</td>
+<td>Pure white</td>
+<td>Warm paper (inherit)</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="even">
+<td>Corners</td>
+<td>Rounded (2-4px)</td>
+<td>Sharp (0)</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="odd">
+<td>Shadows</td>
+<td>Tooltip shadows</td>
+<td>None</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="even">
+<td>Dark mode</td>
+<td>None</td>
+<td>System preference</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="odd">
+<td>CSS structure</td>
+<td><code>:root</code>, global reset</td>
+<td>Scoped, use blog vars</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+<tr class="even">
+<td>HTML structure</td>
+<td>Full document</td>
+<td>Fragment only</td>
+<td>Update VISUAL_GUIDE</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="detailed-violations-in-current-viz" class="level3">
+<h3 class="anchored" data-anchor-id="detailed-violations-in-current-viz">Detailed Violations in Current Viz</h3>
+<p>From <code>new_studies_format/viz/style.css</code>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 50%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Line</th>
+<th>Violation</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1-18</td>
+<td><code>:root</code> variable definitions</td>
+<td>Remove, use blog vars</td>
+</tr>
+<tr class="even">
+<td>20-24</td>
+<td>Global reset <code>* { margin: 0 }</code></td>
+<td>Scope to <code>.viz-main *</code></td>
+</tr>
+<tr class="odd">
+<td>110-111</td>
+<td><code>.spark-bar { border-radius: 1px }</code></td>
+<td>Set to 0</td>
+</tr>
+<tr class="even">
+<td>151</td>
+<td><code>.paper-row:hover { background: #f9fafb }</code></td>
+<td>Use <code>var(--code-bg)</code></td>
+</tr>
+<tr class="odd">
+<td>179</td>
+<td><code>.paper-bar-container { border-radius: 2px }</code></td>
+<td>Set to 0</td>
+</tr>
+<tr class="even">
+<td>186</td>
+<td><code>.paper-bar { transition: width 0.3s }</code></td>
+<td>Reduce to 150ms max</td>
+</tr>
+<tr class="odd">
+<td>247</td>
+<td><code>#sort-select { border-radius: 4px }</code></td>
+<td>Set to 0</td>
+</tr>
+<tr class="even">
+<td>267-276</td>
+<td><code>@keyframes expand</code> 200ms animation</td>
+<td>Reduce to 150ms</td>
+</tr>
+<tr class="odd">
+<td>316</td>
+<td><code>.arxiv-link { color: var(--accent) }</code></td>
+<td>Use <code>var(--black)</code></td>
+</tr>
+<tr class="even">
+<td>330</td>
+<td><code>#tooltip { box-shadow: ... }</code></td>
+<td>Remove</td>
+</tr>
+<tr class="odd">
+<td>330</td>
+<td><code>#tooltip { border-radius implied }</code></td>
+<td>Set to 0</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+</section>
+<section id="supra-phase-a-update-visual_guide.md" class="level1">
+<h1>SUPRA-PHASE A: Update VISUAL_GUIDE.md</h1>
+<p>Make the study generation system produce blog-compatible output by default.</p>
+<section id="a1-proposed-visual_guide.md-rewrite" class="level2">
+<h2 class="anchored" data-anchor-id="a1-proposed-visual_guide.md-rewrite">A1: Proposed VISUAL_GUIDE.md Rewrite</h2>
+<p>Replace <code>new_studies_format/VISUAL_GUIDE.md</code> with this content:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Visual Guide</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Design principles for publication-ready visualizations that integrate with Linear Content blog.</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Skills**: Use </span><span class="in">`/tufte-design`</span><span class="at"> for design decisions and </span><span class="in">`/d3js-skill`</span><span class="at"> for implementation patterns.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Philosophy</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Follow Tufte + Terminal-Minimalist aesthetic:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Every pixel must earn its place</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Data speaks; decoration distracts</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Monochrome palette—no color accents</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Sharp edges—no rounded corners</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>No shadows or gradients</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Integration Context</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Visualizations are embedded in a Quarto blog with existing CSS variables. **Do not define your own variables**—inherit from the host page.</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">### Available Blog Variables</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">```css</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">/* Use these directly - they handle dark mode automatically */</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>font<span class="op">-</span>mono<span class="op">)</span>      <span class="co">/* Berkeley Mono font stack */</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>paper<span class="op">)</span>          <span class="co">/* Background: #FAFAF9 light, #1E1D1B dark */</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>black<span class="op">)</span>          <span class="co">/* Primary: #000000 light, #E6E4DF dark */</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>mid<span class="op">-</span>gray<span class="op">)</span>       <span class="co">/* Secondary text */</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>border<span class="op">-</span>color<span class="op">)</span>   <span class="co">/* Structure, dividers, bar tracks */</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span><span class="op">(--</span>code<span class="op">-</span>bg<span class="op">)</span>        <span class="co">/* Hover backgrounds */</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="design-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="design-tokens">Design Tokens</h2>
+<p>Use blog variables, with explicit sizing:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Typography - inherit font, set sizes */</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>font-family<span class="in">:</span> var<span class="in">(</span>--font-mono<span class="in">)</span>;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>font-size<span class="in">:</span> 14px;           <span class="co">/* Base */</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>font-size<span class="in">:</span> 12px;           <span class="co">/* Small/labels */</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>font-size<span class="in">:</span> 1<span class="fu">.5rem</span>;         <span class="co">/* Headlines (match blog h1) */</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>line-height<span class="in">:</span> 1<span class="fu">.5</span>;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">/* Spacing */</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>--row-height<span class="in">:</span> 32px;</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>--section-gap<span class="in">:</span> 2rem;</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>--column-gap<span class="in">:</span> 2rem;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="output-structure" class="level2">
+<h2 class="anchored" data-anchor-id="output-structure">Output Structure</h2>
+<section id="html-fragment-not-full-document" class="level3">
+<h3 class="anchored" data-anchor-id="html-fragment-not-full-document">HTML Fragment (Not Full Document)</h3>
+<p>Generate <strong>fragments</strong> that can be included in Quarto, not standalone pages:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- viz/app.html - NO doctype, html, head, or body --&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">main</span><span class="ot"> class</span><span class="op">=</span><span class="st">"viz-main"</span><span class="dt">&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">header</span><span class="ot"> class</span><span class="op">=</span><span class="st">"viz-header"</span><span class="dt">&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>Study Title<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="ot"> class</span><span class="op">=</span><span class="st">"subtitle"</span><span class="dt">&gt;</span>Brief description<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">section</span><span class="ot"> id</span><span class="op">=</span><span class="st">"content-section"</span><span class="dt">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">&lt;!-- Visualization content --&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">"tooltip"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"viz-tooltip"</span><span class="dt">&gt;&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Rules:</strong> - Use <code>&lt;h2&gt;</code> for study title (Quarto provides <code>&lt;h1&gt;</code> via frontmatter) - Prefix IDs with descriptive names to avoid conflicts - Include tooltip div at end</p>
+</section>
+<section id="css-structure" class="level3">
+<h3 class="anchored" data-anchor-id="css-structure">CSS Structure</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* viz/style.css - scoped, no globals */</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">/* Container scope - reset only within viz */</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-main</span> <span class="op">*,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-main</span> <span class="op">*</span><span class="in">::before</span><span class="op">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-main</span> <span class="op">*</span><span class="in">::after</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">box-sizing</span><span class="ch">:</span> <span class="dv">border-box</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-main</span> {</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--font-mono</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">line-height</span><span class="ch">:</span> <span class="dv">1.5</span><span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">max-width</span><span class="ch">:</span> <span class="dv">1200</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span> <span class="bu">auto</span><span class="op">;</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">24</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">/* Dark mode handled automatically via var() cascade */</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Forbidden in CSS:</strong> - <code>:root { }</code> definitions - <code>* { margin: 0; padding: 0; }</code> global resets - <code>body { }</code> selectors - Hardcoded colors (use variables) - <code>border-radius</code> &gt; 0 - <code>box-shadow</code></p>
+</section>
+<section id="javascript-structure" class="level3">
+<h3 class="anchored" data-anchor-id="javascript-structure">JavaScript Structure</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// viz/main.js</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Determine data path relative to script location</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> DATA_PATH <span class="op">=</span> <span class="kw">new</span> <span class="fu">URL</span>(<span class="st">'./viz_data.json'</span><span class="op">,</span> <span class="im">import</span><span class="op">.</span><span class="at">meta</span><span class="op">.</span><span class="at">url</span>)<span class="op">.</span><span class="at">href</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Or use explicit path from page root:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">// const DATA_PATH = './viz/viz_data.json';</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Wait for DOM</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">document</span><span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">'DOMContentLoaded'</span><span class="op">,</span> init)<span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">async</span> <span class="kw">function</span> <span class="fu">init</span>() {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> d3<span class="op">.</span><span class="fu">json</span>(DATA_PATH)<span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... render</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Rules:</strong> - Data path must work from Quarto page context (<code>./viz/viz_data.json</code>) - Use <code>DOMContentLoaded</code> or place script at end with <code>defer</code> - Avoid ID conflicts with common names (use descriptive prefixes) - If using ES modules, <code>import.meta.url</code> gives script location</p>
+</section>
+</section>
+<section id="component-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="component-patterns">Component Patterns</h2>
+<section id="bars" class="level3">
+<h3 class="anchored" data-anchor-id="bars">Bars</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.bar</span> {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">height</span><span class="ch">:</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">.bar-track</span> {</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--border-color</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="sparklines" class="level3">
+<h3 class="anchored" data-anchor-id="sparklines">Sparklines</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.spark-bar</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">opacity</span><span class="ch">:</span> <span class="dv">0.6</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tooltips" class="level3">
+<h3 class="anchored" data-anchor-id="tooltips">Tooltips</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-tooltip</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">position</span><span class="ch">:</span> <span class="dv">absolute</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">pointer-events</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--paper</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">var(</span><span class="va">--border-color</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">max-width</span><span class="ch">:</span> <span class="dv">400</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">opacity</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transition</span><span class="ch">:</span> <span class="dv">opacity 0.15</span><span class="dt">s</span><span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">z-index</span><span class="ch">:</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* NO box-shadow, NO border-radius */</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="expandable-details" class="level3">
+<h3 class="anchored" data-anchor-id="expandable-details">Expandable Details</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.detail-panel</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-left</span><span class="ch">:</span> <span class="dv">3</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding-left</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">rem</span><span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin</span><span class="ch">:</span> <span class="dv">8</span><span class="dt">px</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--paper</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="interactive-rows" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-rows">Interactive Rows</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.data-row</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">8</span><span class="dt">px</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">.data-row</span><span class="in">:hover</span> {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--code-bg</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="links" class="level3">
+<h3 class="anchored" data-anchor-id="links">Links</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-decoration</span><span class="ch">:</span> <span class="dv">underline</span><span class="op">;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-underline-offset</span><span class="ch">:</span> <span class="dv">2</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>a<span class="in">:hover</span> {</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-decoration-thickness</span><span class="ch">:</span> <span class="dv">2</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* NO color change */</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="form-controls" class="level3">
+<h3 class="anchored" data-anchor-id="form-controls">Form Controls</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>select {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--font-mono</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">4</span><span class="dt">px</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">var(</span><span class="va">--border-color</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--paper</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>select<span class="in">:focus</span> {</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">outline</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--black</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="data-emphasis-without-color" class="level2">
+<h2 class="anchored" data-anchor-id="data-emphasis-without-color">Data Emphasis Without Color</h2>
+<p>Since color accents are forbidden, use:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Technique</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Opacity</strong> (0.4-0.6)</td>
+<td>Secondary/background data</td>
+</tr>
+<tr class="even">
+<td><strong>Bold weight</strong></td>
+<td>Emphasis within text</td>
+</tr>
+<tr class="odd">
+<td><strong>Border-left</strong> (3px)</td>
+<td>Panel/section emphasis</td>
+</tr>
+<tr class="even">
+<td><strong>Whitespace</strong></td>
+<td>Group related items</td>
+</tr>
+<tr class="odd">
+<td><strong>Direct labels</strong></td>
+<td>Instead of legends</td>
+</tr>
+<tr class="even">
+<td><strong>Size variation</strong></td>
+<td>Headline stats vs details</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="d3.js-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="d3.js-patterns">D3.js Patterns</h2>
+<section id="standard-setup" class="level3">
+<h3 class="anchored" data-anchor-id="standard-setup">Standard Setup</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> ROW_HEIGHT <span class="op">=</span> <span class="dv">32</span><span class="op">;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> SECTION_GAP <span class="op">=</span> <span class="dv">32</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Use CSS variables in JS when needed</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> style <span class="op">=</span> <span class="fu">getComputedStyle</span>(<span class="bu">document</span><span class="op">.</span><span class="at">documentElement</span>)<span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> black <span class="op">=</span> style<span class="op">.</span><span class="fu">getPropertyValue</span>(<span class="st">'--black'</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tooltip-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="tooltip-pattern">Tooltip Pattern</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> tooltip <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(<span class="st">'.viz-tooltip'</span>)<span class="op">;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>selection</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">on</span>(<span class="st">'mouseenter'</span><span class="op">,</span> (e<span class="op">,</span> d) <span class="kw">=&gt;</span> {</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">.</span><span class="fu">style</span>(<span class="st">'opacity'</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">.</span><span class="fu">html</span>(<span class="fu">formatTooltip</span>(d))<span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">on</span>(<span class="st">'mousemove'</span><span class="op">,</span> (e) <span class="kw">=&gt;</span> {</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    tooltip</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">style</span>(<span class="st">'left'</span><span class="op">,</span> (e<span class="op">.</span><span class="at">pageX</span> <span class="op">+</span> <span class="dv">12</span>) <span class="op">+</span> <span class="st">'px'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">style</span>(<span class="st">'top'</span><span class="op">,</span> (e<span class="op">.</span><span class="at">pageY</span> <span class="op">-</span> <span class="dv">12</span>) <span class="op">+</span> <span class="st">'px'</span>)<span class="op">;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">on</span>(<span class="st">'mouseleave'</span><span class="op">,</span> () <span class="kw">=&gt;</span> tooltip<span class="op">.</span><span class="fu">style</span>(<span class="st">'opacity'</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="transitions" class="level3">
+<h3 class="anchored" data-anchor-id="transitions">Transitions</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Max 150ms, ease-out</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>selection<span class="op">.</span><span class="fu">transition</span>()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">duration</span>(<span class="dv">150</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">ease</span>(d3<span class="op">.</span><span class="at">easeOut</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">attr</span>(<span class="st">'transform'</span><span class="op">,</span> d <span class="kw">=&gt;</span> <span class="vs">`translate(0, </span><span class="sc">${</span>d<span class="op">.</span><span class="at">y</span><span class="sc">}</span><span class="vs">)`</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="checklist" class="level2">
+<h2 class="anchored" data-anchor-id="checklist">Checklist</h2>
+<p>Before generating output:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">HTML is a fragment (no doctype/html/head/body)</label></li>
+<li><label><input type="checkbox">CSS has no <code>:root</code> or global resets</label></li>
+<li><label><input type="checkbox">All colors use <code>var(--*)</code> blog variables</label></li>
+<li><label><input type="checkbox">No <code>border-radius</code> &gt; 0 anywhere</label></li>
+<li><label><input type="checkbox">No <code>box-shadow</code> anywhere</label></li>
+<li><label><input type="checkbox">No color accents (monochrome only)</label></li>
+<li><label><input type="checkbox">Links use underline, not color</label></li>
+<li><label><input type="checkbox">Transitions ≤ 150ms</label></li>
+<li><label><input type="checkbox">Data labels direct (no legend lookup)</label></li>
+<li><label><input type="checkbox">IDs prefixed to avoid conflicts</label></li>
+</ul>
+</section>
+<section id="file-output-structure" class="level2">
+<h2 class="anchored" data-anchor-id="file-output-structure">File Output Structure</h2>
+<p>Each study should produce:</p>
+<pre><code>viz/
+├── app.html       # HTML fragment
+├── style.css      # Scoped CSS (no :root, no global reset)
+├── main.js        # D3 visualization
+└── viz_data.json  # Data file</code></pre>
+<pre><code>
+---
+
+## A2: Implementation Phases for VISUAL_GUIDE Update
+
+### Phase A.1: Update VISUAL_GUIDE.md
+- [x] Replace `new_studies_format/VISUAL_GUIDE.md` with new content
+- [x] **Checkpoint**: Document updated
+
+### Phase A.2: Validate Against Current Viz
+- [ ] Audit current `viz/style.css` against new rules
+- [ ] List all violations (rounded corners, shadows, colors, etc.)
+- [ ] **Checkpoint**: Gap list complete
+
+### Phase A.3: Create Reference Implementation
+- [ ] Update `viz/style.css` to comply with new VISUAL_GUIDE
+- [ ] Update `viz/index.html` → `viz/app.html` (fragment only)
+- [ ] Verify no `:root`, no global resets
+- [ ] Replace all colors with blog variables
+- [ ] Remove all border-radius
+- [ ] Remove all box-shadow
+- [ ] **Checkpoint**: Reference viz complies with guide
+
+### Phase A.4: Dark Mode Verification
+- [ ] Test reference viz with dark mode (will need blog context)
+- [ ] Verify all elements adapt correctly
+- [ ] **Checkpoint**: Dark mode works
+
+---
+
+# SUPRA-PHASE B: Quarto Integration
+
+Integrate blog-aligned studies as posts.
+
+## B1: Post Structure
+
+Note: Existing posts use underscore separators (e.g., `20160825_sentiment_bukowski`).
+</code></pre>
+<p>posts/ ├── [existing text posts…] └── 20250103_paper_selection/ ├── index.qmd # Quarto wrapper └── viz/ ├── app.html # HTML fragment (from study system) ├── style.css # Scoped CSS ├── main.js # D3 code └── viz_data.json # Data</p>
+<pre><code>
+## B2: Quarto Wrapper Template
+
+```yaml
+---
+title: "LLM Paper Selection Experiment"
+description: "Comparing single-shot vs multi-run consensus in paper selection."
+date: "2025-01-03"
+categories: [experiments, llm]
+format:
+  html:
+    page-layout: full
+    toc: false
+---</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"viz-container"</span><span class="dt">&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>{{\<span class="er">&lt;</span> include viz/app.html \&gt;}}</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"viz/style.css"</span><span class="dt">&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://d3js.org/d3.v7.min.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">"module"</span><span class="dt">&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Load data relative to page, not script</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> DATA_PATH <span class="op">=</span> <span class="st">'./viz/viz_data.json'</span><span class="op">;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { <span class="cf">default</span><span class="op">:</span> init } <span class="op">=</span> <span class="cf">await</span> <span class="im">import</span>(<span class="st">'./viz/main.js'</span>)<span class="op">;</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Or if main.js self-initializes, just import it:</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// import './viz/main.js';</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Alternative (simpler, if main.js handles its own path):</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://d3js.org/d3.v7.min.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Set data path before main.js runs</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">window</span><span class="op">.</span><span class="at">VIZ_DATA_PATH</span> <span class="op">=</span> <span class="st">'./viz/viz_data.json'</span><span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"viz/main.js"</span><span class="ot"> defer</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then in <code>main.js</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> DATA_PATH <span class="op">=</span> <span class="bu">window</span><span class="op">.</span><span class="at">VIZ_DATA_PATH</span> <span class="op">||</span> <span class="st">'./viz/viz_data.json'</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b3-integration-css-optional" class="level2">
+<h2 class="anchored" data-anchor-id="b3-integration-css-optional">B3: Integration CSS (Optional)</h2>
+<p>If needed, add to <code>styles.css</code> for viz-specific tweaks:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Viz container - ensure full width */</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-container</span> {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* Inherits blog dot grid background */</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">/* Optional: solid background for dense viz */</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">.viz-container.solid-bg</span> {</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--paper</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-image</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="b4-implementation-phases-for-integration" class="level2">
+<h2 class="anchored" data-anchor-id="b4-implementation-phases-for-integration">B4: Implementation Phases for Integration</h2>
+<section id="phase-b.1-create-first-study-post" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.1-create-first-study-post">Phase B.1: Create First Study Post</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Create <code>posts/20260103_llm-resampling/</code> directory</label></li>
+<li><label><input type="checkbox" checked="">Copy compliant viz files from Phase A.3</label></li>
+<li><label><input type="checkbox" checked="">Update <code>main.js</code> to use configurable DATA_PATH</label></li>
+<li><label><input type="checkbox" checked="">Write <code>index.qmd</code> wrapper with data path config and <code>resources</code> for viz_data.json</label></li>
+<li><label><input type="checkbox" checked="">Run <code>quarto preview</code></label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: Post renders without errors, data loads correctly</label></li>
+</ul>
+</section>
+<section id="phase-b.2-verify-visual-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.2-verify-visual-alignment">Phase B.2: Verify Visual Alignment</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Compare viz appearance to blog posts</label></li>
+<li><label><input type="checkbox" checked="">Verify typography matches (Berkeley Mono)</label></li>
+<li><label><input type="checkbox" checked="">Verify color palette (monochrome)</label></li>
+<li><label><input type="checkbox" checked="">Verify no rounded corners visible</label></li>
+<li><label><input type="checkbox" checked="">Verify no shadows visible</label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: Visually indistinguishable from blog aesthetic</label></li>
+</ul>
+</section>
+<section id="phase-b.3-test-interactions" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.3-test-interactions">Phase B.3: Test Interactions</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Tooltips position correctly</label></li>
+<li><label><input type="checkbox" checked="">Hover states work</label></li>
+<li><label><input type="checkbox" checked="">Expandable detail panels work</label></li>
+<li><label><input type="checkbox" checked="">Sorting dropdown works</label></li>
+<li><label><input type="checkbox" checked="">Data loading works (relative path)</label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: All interactions functional</label></li>
+</ul>
+</section>
+<section id="phase-b.4-dark-mode" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.4-dark-mode">Phase B.4: Dark Mode</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Toggle system dark mode</label></li>
+<li><label><input type="checkbox" checked="">Verify all viz elements adapt</label></li>
+<li><label><input type="checkbox" checked="">Check contrast ratios</label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: Dark mode fully functional</label></li>
+</ul>
+</section>
+<section id="phase-b.5-mobile" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.5-mobile">Phase B.5: Mobile</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Test at 750px (below 800px breakpoint)</label></li>
+<li><label><input type="checkbox" checked="">Verify single-column stacking</label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: Mobile-ready</label></li>
+</ul>
+</section>
+<section id="phase-b.6-document" class="level3">
+<h3 class="anchored" data-anchor-id="phase-b.6-document">Phase B.6: Document</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">Add “Viz Post” section to <code>docs/STRUCTURE.md</code></label></li>
+<li><label><input type="checkbox" checked="">Document post creation workflow</label></li>
+<li><label><input type="checkbox" checked=""><strong>Checkpoint</strong>: Documentation complete</label></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="file-changes-summary" class="level2">
+<h2 class="anchored" data-anchor-id="file-changes-summary">File Changes Summary</h2>
+<section id="supra-phase-a-upstream" class="level3">
+<h3 class="anchored" data-anchor-id="supra-phase-a-upstream">Supra-Phase A (Upstream)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>new_studies_format/VISUAL_GUIDE.md</code></td>
+<td>Rewrite (new content)</td>
+</tr>
+<tr class="even">
+<td><code>new_studies_format/viz/app.html</code></td>
+<td>Create (fragment from index.html)</td>
+</tr>
+<tr class="odd">
+<td><code>new_studies_format/viz/style.css</code></td>
+<td>Update (remove :root, radius, shadow)</td>
+</tr>
+<tr class="even">
+<td><code>new_studies_format/viz/index.html</code></td>
+<td>Delete or keep as standalone demo</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="supra-phase-b-integration" class="level3">
+<h3 class="anchored" data-anchor-id="supra-phase-b-integration">Supra-Phase B (Integration)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>posts/20250103_paper_selection/index.qmd</code></td>
+<td>Create</td>
+</tr>
+<tr class="even">
+<td><code>posts/20250103_paper_selection/viz/*</code></td>
+<td>Copy from updated new_studies_format</td>
+</tr>
+<tr class="odd">
+<td><code>docs/STRUCTURE.md</code></td>
+<td>Add viz post section</td>
+</tr>
+<tr class="even">
+<td><code>styles.css</code></td>
+<td>Optional: add .viz-container rules</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="backward-compatibility" class="level2">
+<h2 class="anchored" data-anchor-id="backward-compatibility">Backward Compatibility</h2>
+<p><strong>Old posts remain unchanged.</strong> The new viz post type is additive:</p>
+<ul>
+<li>Text posts: <code>posts/YYYYMMDD_slug/index.qmd</code> or <code>index.ipynb</code></li>
+<li>Viz posts: <code>posts/YYYYMMDD_slug/index.qmd</code> + <code>viz/</code> folder</li>
+</ul>
+<p>Both work within the same Quarto build. The listing shows all posts sorted by date.</p>
+<hr>
+</section>
+<section id="risks-mitigations" class="level2">
+<h2 class="anchored" data-anchor-id="risks-mitigations">Risks &amp; Mitigations</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Study system generates old format</td>
+<td>VISUAL_GUIDE is authoritative; update skills that reference it</td>
+</tr>
+<tr class="even">
+<td>CSS variable cascade fails</td>
+<td>Remove ALL <code>:root</code> from viz CSS</td>
+</tr>
+<tr class="odd">
+<td>ID conflicts in Quarto</td>
+<td>Prefix all IDs (e.g., <code>stats-headline</code> not <code>headline</code>)</td>
+</tr>
+<tr class="even">
+<td>Monochrome limits expressiveness</td>
+<td>Use opacity, weight, borders, whitespace per Tufte</td>
+</tr>
+<tr class="odd">
+<td>D3 bundle size</td>
+<td>CDN with async; acceptable for interactive content</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="decision-log" class="level2">
+<h2 class="anchored" data-anchor-id="decision-log">Decision Log</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 27%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decision</th>
+<th>Choice</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Color accent</td>
+<td>No</td>
+<td>Blog identity is strictly monochrome</td>
+</tr>
+<tr class="even">
+<td>HTML output</td>
+<td>Fragment</td>
+<td>Enables Quarto include without conflicts</td>
+</tr>
+<tr class="odd">
+<td>CSS structure</td>
+<td>Scoped, no :root</td>
+<td>Inherits blog dark mode automatically</td>
+</tr>
+<tr class="even">
+<td>Border radius</td>
+<td>0 everywhere</td>
+<td>Blog forbids rounded corners</td>
+</tr>
+<tr class="odd">
+<td>Shadows</td>
+<td>None</td>
+<td>Blog forbids decorative effects</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/blog\.mg3\.dev");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Linear Content</p>
+</div>   
+    <div class="nav-footer-center">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://github.com/">GitHub</a> · <a href="https://twitter.com">Twitter</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

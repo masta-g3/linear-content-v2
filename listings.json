@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/20260103_llm-resampling/index.html",
       "/posts/20240322_eval-document-placement/index.html",
       "/posts/20240109_recursive-summarization-by-parts/index.html",
       "/posts/20231230_no-quantization-for-small-model/index.html",
